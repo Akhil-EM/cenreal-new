@@ -1,0 +1,25 @@
+.error_border{
+    border: 1px solid red !important;
+  }
+  button{
+  background: #41b548;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  text-transform: uppercase;
+}
+.srch_btn button {
+  height: 100%;
+ 
+  background: #41b548 !important;
+  color: #fff;
+  border-radius: 7px;
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.7px;
+}
+.login_reset_link{
+  text-align: center;
+  padding: 10px;
+}

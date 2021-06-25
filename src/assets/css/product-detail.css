@@ -1,0 +1,41 @@
+.anchor-nav a{
+     text-decoration:none;
+     color:rgb(22, 22, 22);
+     font-size:1.1em;
+}
+.anchor-nav a:hover{
+    color:rgb(235, 133, 0);
+}
+.short-img-style{
+    width:80px;
+    border:2px solid rgba(32, 32, 32, 0.541);
+    border-radius:5px;
+    -webkit-filter: blur(.8px); /* Safari 6.0 - 9.0 */
+    filter: blur(.8px);
+    cursor: pointer;
+    margin-left:10px;
+}
+.short-img-style:hover{
+    -webkit-filter: blur(0px); /* Safari 6.0 - 9.0 */
+    filter: blur(0px);
+}
+.large-img-style{
+    width:80%;
+}
+
+.social-platforms{
+    background-color: rgb(240, 255, 241);
+}
+.icon-cont{
+    
+    margin:10px;
+    font-size:2em;
+    padding:10px;
+    line-height:0;
+    width:max-content;
+    height:max-content;
+    color:#fff;
+}
+.why-block li{
+ margin-bottom:10px;
+}
