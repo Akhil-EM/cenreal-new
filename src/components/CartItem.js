@@ -47,9 +47,12 @@ export default class CartItem extends Component {
     }
 
     cartItemRemove(_cartItemID){
+        console.log('called me')
       HeaderApi.removeCartItemGET(_cartItemID)
              .then(()=>{
-                this.getList();;
+                this.getList();
+                window.location.reload();
+                
              }).catch((error)=>{
                  console.log(error);
              })
@@ -59,6 +62,7 @@ export default class CartItem extends Component {
        HeaderApi.ADDCartItemQuantityGET(_cartItemID)
             .then(()=>{
                 this.getList();
+                window.location.reload();
             }).catch((error)=>{
                 console.log(error)
             })
@@ -69,11 +73,12 @@ export default class CartItem extends Component {
         HeaderApi.SUBCartItemQuantityGET(_cartItemID)
                 .then(()=>{
                     this.getList();
+                    window.location.reload();
                 }).catch((error)=>{
                     alert(error.response.data.Message);
                 });
     }
-
+    
     getList(){
         HeaderApi.cartListGET()
                     .then((response)=>{

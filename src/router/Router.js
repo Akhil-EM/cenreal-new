@@ -7,6 +7,7 @@ import HomePage from '../pages/HomePage'
 import ProductDetail from '../pages/ProductDetail';
 import MinCart from '../components/MinCart';
 import Cart from '../pages/Cart';
+import ServiceableLocations from '../pages/ServiceableLocations';
 export default function router() {
 
     return (
@@ -23,7 +24,9 @@ export default function router() {
                     <Route path='/cart'>
                         <Cart/>
                     </Route>
-                             
+                    <Route path='/locations'>
+                        <ServiceableLocations/>
+                    </Route>         
                  </Switch>
              </BrowserRouter> 
         </div>

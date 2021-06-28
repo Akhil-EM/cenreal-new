@@ -50,3 +50,21 @@
 .product-card-simple h5{
     color: #dd2400;
 }
+
+.location-item{
+    border:1px solid rgba(17, 17, 17, 0.418);
+    width:40vw;
+    margin-bottom:25px;
+    border-radius:8px;
+    cursor:pointer;
+}
+.location-item:hover{
+    background-color: #dd2400;
+    color: #fff;
+}
+
+.location-item p{
+    margin-top:10px;
+    margin-left:25px;
+    font-weight:600;
+}

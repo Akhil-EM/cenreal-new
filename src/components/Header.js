@@ -7,14 +7,14 @@ import { AiOutlineHeart,AiOutlineClose } from 'react-icons/ai';
 import {FiShoppingBag} from 'react-icons/fi'
 import {FaRegUser} from 'react-icons/fa';
 import {FcMenu} from 'react-icons/fc';
-import {BiCurrentLocation} from 'react-icons/bi';
+import {BiCurrentLocation,BiUserCircle} from 'react-icons/bi';
 import Login from './Login';
 import ForgotPassword from './ForgotPassword';
 import LoginWithOtp from './LoginWithOtp';
 import HeaderApi from '../api/HeaderApi';
 
 import Radium, {StyleRoot} from 'radium';
-import {slideInRight,slideOutRight } from 'react-animations';
+import {slideInRight,slideOutRight,slideOutLeft,slideInLeft} from 'react-animations';
 import { withRouter} from "react-router-dom";
 import '../assets/css/header.css';
 import '../assets/css/animate.css'
@@ -55,7 +55,11 @@ class Header extends Component {
              minCartStyle:{display:'none'},
              minCartDisplayed:false,
              cartSubTotal:0,
-             cartSummery:[]
+             cartSummery:[],
+             deliverLocation:'',
+             delLocationId:null,
+             delLocationPincode:null,
+             mainMenuStyle:{display:'none'}
              
         }
 
@@ -75,24 +79,17 @@ class Header extends Component {
          
           
     }
+    navigateToLocations(){
+        this.handleDeliveryLocationBoxClose();
+        this.props.history.push(`/locations`);
+    }
     componentWillMount(){
         this.preSettings();
        
      }
     
     StartAnimation=()=>{
-        this.setState({minCartStyle:{backgroundColor:'#fff',
-                                  height:'100vh',
-                                  width:'60%',
-                                  position:'absolute',
-                                  right:0,
-                                  top:0,
-                                  boxShadow: '-7px 3px 15px 0px rgba(0, 0, 0, 0.295)',
-                                  display:'',
-                                  zIndex:'600',
-                                  animation: 'x 1s',
-                                  animationName: Radium.keyframes(slideInRight, 'right')},
-                        minCartDisplayed:true});
+        this.setState({minCartStyle:{display:'none'}});
        
     }
 
@@ -112,11 +109,31 @@ class Header extends Component {
         
     }
 
+    slideMenu=()=>{
+        this.setState({mainMenuStyle:{animation: 'x 1s',
+                                      height:'100vh',
+                                      width:'340px',
+                                      position:'absolute',
+                                      top:0,
+                                      left:0,
+                                      zIndex:'100',
+                                      boxShadow:'10px 1px 19px -14px rgba(0,0,0,0.75)',
+                                      animationName: Radium.keyframes(slideInLeft, 'left')},
+                                      });
+    }
+    endMenuSlide=()=>{
+        this.setState({mainMenuStyle:{animation: 'x 1s',
+                       animationName: Radium.keyframes(slideOutLeft, 'left')},
+                       display:'none'
+                        });
+        setTimeout((()=>{ this.setState({mainMenuStyle:{display:'none'}}) }),1000);
+    }
+
     
     
     preSettings=()=>{
         let custDetails=JSON.parse(localStorage.getItem('custInfo'));
-        
+        this.setState({deliverLocation:localStorage.getItem('area')});
         if(custDetails !=null){
           localStorage.setItem('gustId','null')
           this.setState({userName:custDetails.custName,loginBtnDisp:'none'})
@@ -185,10 +202,18 @@ class Header extends Component {
             console.log('continue here ')
         }
     }
+
+    signOut=()=>{
+        window.localStorage.clear();
+        window.location.reload();
+    }
     
-    changeDeliveryLocation(_location){
-       
-        this.setState({currentDeliveryLocation:_location,DellistDisplay:'none'})
+    changeDeliveryLocation(_location,_pincodeId,_pincode){
+        ///item.area,item.pincodeId,item.pincode
+        this.setState({currentDeliveryLocation:_location,
+                       delLocationId:_pincodeId,
+                       delLocationPincode:_pincode,
+                       DellistDisplay:'none'})
     }
    
     searchProduct=()=>{
@@ -209,8 +234,11 @@ class Header extends Component {
         this.setState({searchBoxDisplay:'none',searchTerm:''})
     }
     deliveryLocationCheck=()=>{
-        if(this.state.currentDeliveryLocation=='') return alert('select delivery location')
-        this.handleDeliveryLocationBoxClose()
+        if(this.state.currentDeliveryLocation=='') return alert('select delivery location');
+        localStorage.setItem('area',this.state.currentDeliveryLocation);
+        localStorage.setItem('pincodeId',this.state.delLocationId);
+        localStorage.setItem('pincode',this.state.delLocationPincode);
+        window.location.reload();
     }
 
 
@@ -255,11 +283,14 @@ class Header extends Component {
                         size="lg"
                        aria-labelledby="contained-modal-title-vcenter"
                        centered>
-                           <AiOutlineClose onClick={this.handleClose} style={{fontSize:'1.5em',
-                                                                            position:'absolute',
-                                                                            right:0,
-                                                                            margin:'10px'}}/>
-                                                                            <br/>
+                           <button className='btn' onClick={this.handleClose}>
+                            <AiOutlineClose  style={{fontSize:'1.5em',
+                                                        position:'absolute',
+                                                        right:0,
+                                                        margin:'10px'}}/>
+                           </button>
+                           
+                         <br/>
                     <Modal.Body>
                     <div className="container">
                     <div className="row">
@@ -284,11 +315,20 @@ class Header extends Component {
              </div>
              <div className='under-nav justify-content-between p-l-5'>
                  <div className='d-flex '>
-                   <button className='menu-btn'><FcMenu/></button>
+                   <button className='menu-btn' onClick={this.slideMenu}><FcMenu/></button>
                   
                  </div>
                  <div>
-                   <button className='menu-btn' onClick={this.handleDeliveryLocationBoxShow}><span style={{fontSize:'.6em',color:'black'}}>Choose Delivery location</span><BiCurrentLocation/></button>
+                   
+                   <button className='menu-btn' onClick={this.handleDeliveryLocationBoxShow}>
+                       <span style={{fontSize:'.6em',color:'black'}}>
+                           {
+                               this.state.deliverLocation==null?'Choose Delivery location':
+                               'Deliver to: '+this.state.deliverLocation
+                           }
+                       </span>
+                       <BiCurrentLocation/>
+                   </button>
                  </div>
              </div>
              <Modal show={this.state.showDeliveryLocationBox} onHide={this.handleDeliveryLocationBoxClose}
@@ -307,7 +347,7 @@ class Header extends Component {
                          <div style={{width:'100%',display:this.state.DellistDisplay}} >
                              {
                                  deliveryList.map((item,key)=>(
-                                    <div key={key} className='delivery-list' onClick={() => this.changeDeliveryLocation(item.area)}>
+                                    <div key={key} className='delivery-list' onClick={() => this.changeDeliveryLocation(item.area,item.pincodeId,item.pincode)}>
                                        <p>{item.area}</p>
                                    </div>
                                   ))
@@ -316,8 +356,8 @@ class Header extends Component {
                          <br/>
                          <br/>
                          <div className='d-flex justify-content-between'>
-                            <button className='btn btn-success' onClick={this.deliveryLocationCheck}>Submit</button>
-                            <a href='#'>Available locations</a>
+                            <button className='btn btn-success' onClick={()=>this.deliveryLocationCheck()}>Submit</button>
+                            <button onClick={()=>this.navigateToLocations()} className='btn'>Available locations</button>
                          </div>
                          
                     </div>
@@ -337,27 +377,7 @@ class Header extends Component {
                         </div>
                         </div>
                         <div className='p-3 ' style={{height:'500px',overflowY:'scroll'}}>
-                         {/* {
-                             cartList.map((item,key)=>(
-                                <div key={key} className='cart-item d-flex justify-content-around'>
-                                <img src={imageUrlBase+item.imageUrl} alt='image' width={60}/>
-                                <div className='name-and-count'>
-                                <h6>{item.prName}</h6>
-                                <p style={{color:'rgba(0, 0, 0, 0.295)'}}>{item.qty} <AiOutlineClose style={{marginBottom:'5px'}}/> Rs {item.unitPrice}</p>
-                                </div>
-                                <div className='quantity-update'>
-                                    <button onClick={()=>this.cartItemQuantityAdd(item.cartItemsId)}>+</button>
-                                      <p>{item.qty}</p>
-                                    <button onClick={()=>this.cartItemQuantitySub(item.cartItemsId)}>-</button>
-                                </div>
-                                <div className=' d-flex justify-content-around'>
-                                    <h6 style={{marginLeft:'15px'}}>Rs {item.qty *item.unitPrice}</h6>
-                                    
-                                </div>
-                                <AiOutlineClose style={{marginLeft:'25px',fontSize:'1.5em'}} onClick={()=>this.cartItemRemove(item.cartItemsId)}/>
-                                </div>
-                              ))
-                         } */}
+                        
                          <CartItem ItemsArr={cartList}/>
                         
                         </div>
@@ -371,7 +391,51 @@ class Header extends Component {
                         </div>
                   </div>
                 </StyleRoot>
-                
+                <StyleRoot >
+                <div className='main-header' style={this.state.mainMenuStyle}>
+                  <div className='main-header-head'>
+                     <div style={{fontSize:'1.5em',
+                                   width:'100%',
+                                   textAlign:'end'}}>
+                       
+                       <button className='btn text-light' onClick={this.endMenuSlide}>
+                          <AiOutlineClose/>
+                       </button>
+                     </div>
+                     <div className='d-flex'>
+                        <div style={{fontSize:'1.9em',
+                                      marginRight:'10px',
+                                      }}>
+                            <BiUserCircle/>
+                        </div>
+                         {
+                             this.state.userName==''?'':
+                             <h5 className='mt-3'>Hello, {this.state.userName}</h5>
+                         }
+                        
+                        <br/>
+                     </div>
+                     <div className='d-flex  justify-content-between text-center'>
+                            <h5 className='head-btn'>Account</h5>
+                            <h5 className='head-btn'>My Orders</h5>
+                     </div>
+                  </div>
+                  <div style={{padding:'10px'}}>
+                      <h6  className='nav-item' onClick={()=>this.navigateTo('')}>Home</h6>
+                      <h6 className='nav-item' >My Wishlist</h6>
+                      <h6 className='nav-item' >All Offers</h6>
+                      <hr/>
+                      <h6 className='nav-item' >Account</h6>
+                      <h6 className='nav-item' >Help</h6>
+                      <h6 className='nav-item' >Change location ({this.state.deliverLocation})</h6>
+                      <h6 className='nav-item' onClick={this.signOut}>Sign Out</h6>
+                      <hr/>
+                      <h6><b>CONTACT US</b></h6>
+                      <h6 className='nav-item' >WhatsApp Us +91 7594999934</h6>
+                      <h6 className='nav-item' >Call Us +91 7594999934</h6>
+                  </div>
+                </div>
+                </StyleRoot>
             </div>
 
         )

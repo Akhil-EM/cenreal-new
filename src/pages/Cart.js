@@ -7,21 +7,30 @@ import{RiArrowLeftCircleFill} from 'react-icons/ri'
 import HeaderApi from '../api/HeaderApi';
 import CartApi from '../api/CartApi';
 import { imageUrlBase } from '../config';
+import Modal from 'react-bootstrap/Modal';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import OwlCarousel from 'react-owl-carousel';  
 import 'owl.carousel/dist/assets/owl.carousel.css';  
 import 'owl.carousel/dist/assets/owl.theme.default.css'; 
 import ProductCard from '../components/ProductCard';
 import Footer from '../components/Footer';
+import refundImg from '../assets/img/refund-icon.png'
+import rupeeImg from '../assets/img/rupees-icon.png'
+import deliveryImg from '../assets/img/quick-delivery-icon.png'
+import {AiOutlineClose } from 'react-icons/ai';
+import '../assets/css/cart.css';
+import Helper from '../helper/Helper';
+import { withRouter} from "react-router-dom";
 
-export default class Cart extends Component {
+class Cart extends Component {
     constructor(props) {
         super(props)
-    
         this.state = {
              cartList:[],
              cartSummery:{},
              saveForLaterList:[],
              recentProductsList:[],
+             couponList:[],
              OwlCarouselOptions: {
                 loop:false,
                 margin:0,
@@ -39,18 +48,26 @@ export default class Cart extends Component {
                         items: 5,
                     },
                 },
-             }
+                show:false,
+             },
+             selectedDivId:null,
+             couponCode:'',
+             couponId:null
         }
+
+       //this.getPreData=this.getPreData.bind(this);
     }
 
     componentWillMount(){
        this.getPreData();
     }
+    handleClose = () => this.setState({show:false});
+    handleShow = () => this.setState({show:true});
 
     getPreData(){
         HeaderApi.cartSummeryGET()
                  .then((response)=>{
-                    this.setState({cartSummery:response.data.Data,subTotal:response.data.Data.subTotal})
+                    this.setState({couponCode:response.data.Data.cpcode,cartSummery:response.data.Data,subTotal:response.data.Data.subTotal})
                  }).catch((error)=>{
                      console.log(error.response)
                  });
@@ -74,9 +91,31 @@ export default class Cart extends Component {
                    this.setState({recentProductsList:response.data.Data})
                }).catch((error)=>{
                    console.log(error)
-               })
+               });
+        CartApi.couponListGET()
+                .then((response)=>{
+                    
+                    this.setState({couponList:response.data.Data})
+                }).catch((error)=>{
+                    console.log(error)
+                });
+    }
+    
+    selectCoupon=(_id,_couponCode,_couponId)=>{
+        this.setState({selectedDivId:_id,couponCode:_couponCode,couponId:_couponId});
     }
 
+    applyCoupon=()=>{
+        if(this.state.couponId==null) return alert('select a coupon');
+
+        CartApi.applyCouponPOST(this.state.couponCode)
+               .then((response)=>{
+                   alert(response.data.Data.Message);
+                   this.getPreData();
+               }).catch((error)=>{
+                   console.log(error);
+               })
+    }
     deleteSaveForLater(_urlKey){
       console.log('delete',_urlKey);
     }
@@ -89,12 +128,19 @@ export default class Cart extends Component {
                   console.log(error)
               })
     }
+
+    navigateTo(_navigateTo){
+       
+            this.props.history.push(`/${_navigateTo}`);     
+          
+    }
     
     render() {
         var cartList=this.state.cartList;
         var cartSummery=this.state.cartSummery;
         var saveForLaterList=this.state.saveForLaterList;
         var recentProductList=this.state.recentProductsList;
+        var couponList=this.state.couponList;
         return (
             <div>
                 <Header/>
@@ -132,6 +178,15 @@ export default class Cart extends Component {
                                     <h3>TOTAL</h3>
                                     <h3 className='text-success'>Rs.{cartSummery.grandTotal}</h3>
                                 </div>
+                                {
+                                    cartSummery.couponAmount == 0?'':
+                                    <div className='bg-warning d-flex justify-content-around text-success'>
+                                        <p>You saved !</p>
+                                        <p>Rs {cartSummery.couponAmount}</p>                                    
+                                     </div>
+
+                                }
+                               
                                 
                             </div>
                             <div className='d-flex justify-content-between mt-4 text-success'>
@@ -147,13 +202,19 @@ export default class Cart extends Component {
                             <div className='text-center'>
                                  <div className='mt-4 p-4' style={{backgroundColor:'rgba(179, 179, 179, 0.418)'}}>
                                     <div class="input-group mb-2">
-                                        <input type="text" class="form-control text-center" id="inlineFormInputGroup" placeholder="Enter voucher code" />
+                                        <input type="text"
+                                               class="form-control text-center" 
+                                               placeholder="Enter voucher code"
+                                               value={this.state.couponCode} />
                                         <div class="input-group-prepend">
-                                        <div class="input-group-text p-3">Apply</div>
+                                          {/* <div class="input-group-text p-3">Apply</div> */}
+                                          <button className='btn' >Apply</button>
                                         </div>
                                     </div>
                                     <div className='bg-warning p-3 mt-4 text-dark'>
-                                        <a href='#'>2 promo code applicable</a>
+                                        <a onClick={this.handleShow}  style={{color:'black',
+                                                                              textDecoration:'none',
+                                                                              cursor:'pointer'}}>{couponList.length} promo code applicable</a>
                                     </div>
                                  </div>
 
@@ -163,8 +224,29 @@ export default class Cart extends Component {
                     </div>
                 </div>
                 <h4 className='text-center mt-3'>Why shop from Centreal Bazaar?</h4>
-                <div className='w-75 bg-success m-2'style={{height:'150px'}}>
-                   
+                <br/>
+                <div className="container ">
+                <div className="row">
+                    <div className="col-md d-flex">
+                    <img src={refundImg} alt='refund' width={40} height={40} style={{marginRight:'5px'}}/>
+                                            <h6>Easy returns & refunds<br/>
+                                               Return products at doorstep and get refund in minutes.
+                                               </h6>
+                                               <br/>
+                    </div>
+                    <div className="col-md d-flex">
+                    <img src={rupeeImg} alt='refund' width={40} height={40} style={{marginRight:'5px'}}/>
+                                            <h6>Best quality products<br/>
+                                                Get best quality products at lowest price.</h6>
+                                                <br/>
+                    </div>
+                    <div className="col-md d-flex">
+                    <img src={deliveryImg} alt='refund' width={40} height={40} style={{marginRight:'5px'}}/>
+                                            <h6>Quick delivery<br/>
+                                                Get products delivered to your doorsteps in no time.</h6>
+                                                <br/>
+                    </div>
+                </div>
                 </div>
                 <hr className='mt-4 mb-4'/>
                 {/* {
@@ -221,8 +303,69 @@ export default class Cart extends Component {
                  </OwlCarousel>
                 }
                 <br/>
+                <Modal show={this.state.show} onHide={this.handleClose}
+                        size="lg"
+                       aria-labelledby="contained-modal-title-vcenter"
+                       centered>
+                        <div className='d-flex justify-content-around'>
+                        <button style={{border:'none',backgroundColor:'none'}} onClick={this.handleClose}>
+                          <AiOutlineClose  className='close-btn'/>
+                        </button>
+                        
+                        </div>  
+                        <br/>
+                        <Modal.Body>
+                        <div className="container">
+                            <p><b>Apply Voucher</b></p>
+                            {
+                                couponList.length <= 0?'no coupons found':
+                                couponList.map((item,key)=>(
+                                    <div className='w-100 coupon-item'
+                                    key={key} 
+                                    style={{backgroundColor:this.state.selectedDivId==key?'rgba(0, 0, 0, 0.158)':''}}
+                                    onClick={()=>this.selectCoupon(key,item.cpCode,item.cpId)}>
+                                      <div className='d-flex'>
+                                      <div className='coupon-code'>
+                                          {item.cpCode}
+                                      </div>
+                                      <div style={{marginLeft:'25px'}}>
+                                          {
+                                              item.cpMode=='FIXED'?
+                                              <h6>Rs.{item.cpAmount} OFF</h6>
+                                              :''
+
+                                          }
+                                          {
+                                              item.cpMode=='PERCENTAGE'?
+                                              <h6>Rs.{item.cpAmount} % OFF upto RS. {item.cpCap}</h6>
+                                              :''
+
+                                          }
+                                          
+                                          <h6>Expire on: {Helper.changeTime(item.cpExpiry)}</h6>
+                                      </div>
+                                      </div>
+                                      <div>
+                                      <p className='text-primary' style={{textAlign:'end'}}>Minimum order amount {item.cpMinOrderAmount}</p>
+                                      </div>
+                                   </div>
+                                ))
+                            }
+                           
+                            <div style={{textAlign:'end'}}>
+                                <button className='btn btn-danger' onClick={this.applyCoupon}>Apply Voucher</button>
+                            </div>
+                        </div>
+                        
+                        </Modal.Body>
+                    
+                </Modal>
+                <br/>
                 <Footer/>
          </div>
         )
     }
 }
+
+
+export default  withRouter(Cart);

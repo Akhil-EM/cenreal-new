@@ -73,10 +73,32 @@
     left: 0;
 }
 
-/* @-webkit-keyframes slide {
-    100% { left: 0; }
+.main-header{
+    background-Color:#fff;
+    width:340px;
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:100;
+    box-Shadow:10px 1px 19px -14px rgba(0,0,0,0.75);
+}
+.main-header-head{
+    background-color:#D71920;
+    width:100%;
+    padding:10px 10px 10px 25px;
+    color:#fff;
+    cursor: pointer;
 }
 
-@keyframes slide {
-    100% { left: 0; }
-} */
+.head-btn{
+    border:2px solid #fff;
+    padding:5px;
+    width:45%;
+}
+.nav-item{
+    margin-bottom:20px;
+    cursor: pointer;
+}
+.nav-item:hover{
+    color:rgb(185, 144, 8);
+}

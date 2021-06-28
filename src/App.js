@@ -2,6 +2,7 @@ import './App.css';
 import '../src/assets/css/style.css'
 // process.env.PUBLIC_URL+'/img/android-chrome-192x192.png'
 import Router from './router/Router'
+
  
 function App() {
   return (
@@ -11,7 +12,8 @@ function App() {
           setGustId()
         }
          <Router/>
-        
+         {/* <Toast message={'helloo toast'}/> */}
+         
     </div>
   );
 

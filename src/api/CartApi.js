@@ -52,7 +52,30 @@ class CartApi{
             }
         })
     }
- 
+
+    couponListGET(){
+        var _gustId,_custId;
+        if(this._gustId==null) _gustId='';
+        if(this.custId ==null) _custId=''
+        return http.get('CouponList',{
+            params:{
+                custId:this._custId,
+                
+                
+            }
+        })
+    }
+    
+    applyCouponPOST(_code){
+        var _custId;
+        if(this.custId ==null) _custId=''
+        return http.post('Order/ApplyCouponCode',{
+            ccode:_code,
+            custId:this._custId,
+            vendorurlkey:Config.Headers.vendorurlkey
+        })
+    }
+    
    
 }
 

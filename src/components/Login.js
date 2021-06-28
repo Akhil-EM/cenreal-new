@@ -44,7 +44,7 @@ import { Spinner,Alert } from 'react-bootstrap'
                             console.log('login',response.data.Message);
                             this.setState({spinnerDisplay:'none',textDisplay:''});
                             this.props.closeFn();
-                            this.props.preSett();
+                            window.location.reload();
                             
                         }).catch((err)=>{
                             this.setState({spinnerDisplay:'none',textDisplay:'',errorDisplay:''});

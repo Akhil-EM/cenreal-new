@@ -1,0 +1,21 @@
+.close-btn{
+    font-size:1.5em;
+    position:absolute;
+    right:0;
+    margin:10px
+}
+
+.coupon-item{
+    border:.5px solid rgba(51, 51, 51, 0.575);
+    padding:10px;
+    padding-left:20px;
+    margin-bottom:20px;
+}
+.coupon-code{
+    border:.6px dashed rgba(51, 51, 51, 0.247);
+    padding:15px 10px 15px 10px;
+    text-transform: uppercase;
+}
+.bg-black{
+    background-color: rgba(0, 0, 0, 0.158);
+}

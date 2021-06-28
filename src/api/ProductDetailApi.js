@@ -1,10 +1,10 @@
 import http from './@axios';
 
 class ProductDetailApi{
-    _custId=null
-    _gustId=null
+    _custId=''
+    _gustId=''
     constructor(){
-        
+        console.log(localStorage.getItem('gustId'))
         var custDetails=JSON.parse(localStorage.getItem('custInfo'));
         
         if(custDetails != null){
@@ -14,14 +14,11 @@ class ProductDetailApi{
         }
     }
     productDetailsGET(_urlKey){
-
-        var _gustId,_custId;
-        if(this._gustId==null) _gustId='';
-        if(this.custId ==null) _custId=''
+        
         return http.get('ProductDetails',{
             params:{
                 custId:this._custId,
-                guestId:_gustId,
+                guestId:this._gustId,
                 urlKey:_urlKey
             }
         })
@@ -29,13 +26,10 @@ class ProductDetailApi{
     
     featuredProductGET(){
         
-        var _gustId,_custId;
-        if(this._gustId==null) _gustId='';
-        if(this.custId ==null) _custId=''
         return http.get('FeaturedProduct',{
             params:{
                 custId:this._custId,
-                guestId:_gustId,
+                guestId:this._gustId,
             }
         })
     }
@@ -48,20 +42,18 @@ class ProductDetailApi{
         return http.get('RecentProducts',{
             params:{
                 custId:this._custId,
-                guestId:_gustId,
+                guestId:this._gustId,
                 
             }
         })
     }
     relatedProductsGET(_urlKey){
 
-        var _gustId,_custId;
-        if(this._gustId==null) _gustId='';
-        if(this.custId ==null) _custId=''
+       
         return http.get('RelatedProducts',{
             params:{
                 custId:this._custId,
-                guestId:_gustId,
+                guestId:this._gustId,
                 urlKey:_urlKey
             }
         })

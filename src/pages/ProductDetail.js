@@ -68,7 +68,6 @@ export default class ProductDetail extends Component {
          var startPos=fullUrl.search('detail/');
          var strLen=fullUrl.length;
          var prodUrl=fullUrl.slice(startPos+7,strLen);
-        
          var ProdDetails;
          ProductDetailApi.productDetailsGET(prodUrl)
                          .then((response)=>{
