@@ -8,6 +8,8 @@ import ProductDetail from '../pages/ProductDetail';
 import MinCart from '../components/MinCart';
 import Cart from '../pages/Cart';
 import ServiceableLocations from '../pages/ServiceableLocations';
+import Products from '../pages/Products';
+let val;
 export default function router() {
 
     return (
@@ -26,7 +28,11 @@ export default function router() {
                     </Route>
                     <Route path='/locations'>
                         <ServiceableLocations/>
-                    </Route>         
+                    </Route> 
+                    {/* <Route path={`/products/:value`}>
+                        <Products />
+                    </Route>         */}
+                    <Route path="/products/:category" component={Products}/>
                  </Switch>
              </BrowserRouter> 
         </div>

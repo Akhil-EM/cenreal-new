@@ -3,11 +3,12 @@ import Modal from 'react-bootstrap/Modal';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Badge from './Badge';
 import SearchItemLoader from './SearchItemLoader'
-import { AiOutlineHeart,AiOutlineClose } from 'react-icons/ai';
+import { AiOutlineHeart,AiOutlineClose,AiOutlineUnorderedList,
+         AiOutlineSearch} from 'react-icons/ai';
 import {FiShoppingBag} from 'react-icons/fi'
 import {FaRegUser} from 'react-icons/fa';
 import {FcMenu} from 'react-icons/fc';
-import {BiCurrentLocation,BiUserCircle} from 'react-icons/bi';
+import {BiCurrentLocation,BiSearch,BiUserCircle} from 'react-icons/bi';
 import Login from './Login';
 import ForgotPassword from './ForgotPassword';
 import LoginWithOtp from './LoginWithOtp';
@@ -59,7 +60,9 @@ class Header extends Component {
              deliverLocation:'',
              delLocationId:null,
              delLocationPincode:null,
-             mainMenuStyle:{display:'none'}
+             mainMenuStyle:{display:'none'},
+             searchMenuStyle:{display:'none'},
+             searchMenuOpen:false
              
         }
 
@@ -86,7 +89,7 @@ class Header extends Component {
     componentWillMount(){
         this.preSettings();
        
-     }
+    }
     
     StartAnimation=()=>{
         this.setState({minCartStyle:{display:'none'}});
@@ -123,12 +126,63 @@ class Header extends Component {
     }
     endMenuSlide=()=>{
         this.setState({mainMenuStyle:{animation: 'x 1s',
+                       height:'100vh',
+                       width:'340px',
+                       position:'absolute',
+                       top:0,
+                       left:0,
+                       zIndex:'100',
+                       boxShadow:'10px 1px 19px -14px rgba(0,0,0,0.75)',
                        animationName: Radium.keyframes(slideOutLeft, 'left')},
                        display:'none'
                         });
         setTimeout((()=>{ this.setState({mainMenuStyle:{display:'none'}}) }),1000);
     }
-
+    
+    slideSearchMenu=()=>{
+        if(this.state.searchMenuOpen){
+            this.setState({searchMenuStyle:{animation: 'x 1s',
+                                        backgroundColor:'#fff',
+                                        height:'100vh',
+                                        width:'400px',
+                                        position:'absolute',
+                                        top:0,
+                                        left:0,
+                                        zIndex:'100',
+                                        boxShadow:'10px 1px 19px -14px rgba(0,0,0,0.75)',
+                                        animationName: Radium.keyframes(slideOutLeft, 'left')},
+                         searchMenuOpen:false});
+            setTimeout((()=>{ this.setState({searchMenuStyle:{display:'none'}}) }),1000);
+        }else{
+            this.setState({searchMenuStyle:{animation: 'x 1s',
+                                            backgroundColor:'#fff',
+                                            height:'100vh',
+                                            width:'400px',
+                                            position:'absolute',
+                                            top:0,
+                                            left:0,
+                                            zIndex:'100',
+                                            boxShadow:'10px 1px 19px -14px rgba(0,0,0,0.75)',
+                                            animationName: Radium.keyframes(slideInLeft, 'left')},
+                                            searchMenuOpen:true
+                                            });
+        }
+    }
+    endSlideSearchMenu=()=>{
+        this.setState({searchMenuStyle:{animation: 'x 1s',
+                                        backgroundColor:'#fff',
+                                        height:'100vh',
+                                        width:'400px',
+                                        position:'absolute',
+                                        top:0,
+                                        left:0,
+                                        zIndex:'100',
+                                        boxShadow:'10px 1px 19px -14px rgba(0,0,0,0.75)',
+                                        animationName: Radium.keyframes(slideOutLeft, 'left')},
+                                        searchMenuOpen:false
+                                        });
+        setTimeout((()=>{ this.setState({searchMenuStyle:{display:'none'}}) }),1000);
+    }
     
     
     preSettings=()=>{
@@ -185,7 +239,8 @@ class Header extends Component {
     handleShow = () => this.setState({show:true});
     handleChange=(event)=>{
         this.setState({searchTerm: event.target.value});
-        console.log(this.state.searchTerm);
+        
+        ///console.log(this.state.searchTerm);
         this.searchProduct();
     } 
 
@@ -257,21 +312,21 @@ class Header extends Component {
                 <div className='d-flex '>
                    <img src={logoUrl} alt='logo' height={50}/>
                     <div className='d-none d-lg-block'>
-                        <form className='search-container '>
+                        <div className='search-container '>
                           <input  onKeyUp={this.searchProduct} onChange={this.handleChange} className="search-input" value={this.state.searchTerm} type="text" placeholder="Search Inside 15,000 products....."/>
                           <button className="search-icon" onClick={this.closeSearch}><AiOutlineClose style={{fontSize:'1.5em'}}/></button>
                           <button className="search-btn" type="submit">Search</button>
-                        </form> 
+                        </div> 
                         <SearchItemLoader searchBoxDisp={this.state.searchBoxDisplay} searchLoadDisp={this.state.searchLoadDisplay} searchList={this.state.searchProducts}/>
                     </div>
                 </div>
                 <div className='d-flex align-items-center margin  justify-content-between width-250px'>
                     <div onClick={this.ShowFavorite}>
-                       <Badge count={wishList.length} ><AiOutlineHeart className="icon "/></Badge>
+                       <Badge count={wishList.length} bgColor='#023f88'><AiOutlineHeart className="icon "/></Badge>
                     </div>
                     
                     <div  onClick={this.StartAnimation}>
-                      <Badge count={cartList.length} ><FiShoppingBag className="icon"/></Badge>
+                      <Badge count={cartList.length} bgColor='#023f88'><FiShoppingBag className="icon"/></Badge>
                     </div>
                     <button className="icon-btn text-light"><FaRegUser /></button>
                     <button className="icon-btn text-light" style={{display:this.state.loginBtnDisp}}><h5 className="mt-3" onClick={this.handleShow}>Login</h5></button>
@@ -402,19 +457,22 @@ class Header extends Component {
                           <AiOutlineClose/>
                        </button>
                      </div>
-                     <div className='d-flex'>
-                        <div style={{fontSize:'1.9em',
-                                      marginRight:'10px',
-                                      }}>
-                            <BiUserCircle/>
-                        </div>
-                         {
+                     {
                              this.state.userName==''?'':
-                             <h5 className='mt-3'>Hello, {this.state.userName}</h5>
-                         }
-                        
-                        <br/>
-                     </div>
+                             <div className='d-flex'>
+                                <div style={{fontSize:'1.9em',
+                                            marginRight:'10px',
+                                            }}>
+                                    <BiUserCircle/>
+                                </div>
+                                <h5 className='mt-3'>Hello, {this.state.userName}</h5>
+                                
+                                
+                                <br/>
+                            </div>
+                             
+                     }
+                     
                      <div className='d-flex  justify-content-between text-center'>
                             <h5 className='head-btn'>Account</h5>
                             <h5 className='head-btn'>My Orders</h5>
@@ -436,6 +494,73 @@ class Header extends Component {
                   </div>
                 </div>
                 </StyleRoot>
+                {/* search nav */}
+                <StyleRoot >
+                <div style={this.state.searchMenuStyle}     
+                     className='main-header'>
+                  <div className='main-header-head'>
+                     <div style={{fontSize:'1.5em',
+                                   width:'100%',
+                                   textAlign:'end'}}>
+                       
+                       <button className='btn' style={{color:'#fff'}} onClick={this.endSlideSearchMenu}>
+                          <AiOutlineClose/>
+                       </button>
+                     </div>
+                     <div className='w-100'>
+                          <input style={{width:'80%'}} 
+                                onKeyUp={this.searchProduct}
+                                onChange={this.handleChange}  
+                                value={this.state.searchTerm} 
+                                type="text" 
+                                placeholder="Search Inside 15,000 products....."/>
+                          <button style={{border:'none',
+                                          backgroundColor:'black',
+                                          color:'#fff'}}>
+                              <BiSearch style={{fontSize:'1.5em'}}/>
+                          </button>
+                          <br/>
+                        <SearchItemLoader topHeight='80px'
+                                          searchBoxDisp={this.state.searchBoxDisplay}
+                                          searchLoadDisp={this.state.searchLoadDisplay}
+                                          searchList={this.state.searchProducts}/>
+                    </div>
+                     
+                  </div>
+                  <div style={{padding:'10px'}}>
+                      
+                  </div>
+                </div>
+                </StyleRoot>
+                <div className='mobile-nav  d-lg-none'>
+                     <div className='items-container d-flex justify-content-around'>
+                         <div style={{cursor:'pointer'}} onClick={this.slideMenu}>
+                             <span style={{fontSize:'2em'}}>
+                               <FcMenu/>
+                            </span><br/>
+                             Menu
+                         </div>
+                         <div style={{cursor:'pointer'}}>
+                             <span style={{fontSize:'2em'}}>
+                              <AiOutlineUnorderedList/>
+                             </span>
+                             <br/>
+                             Category
+                         </div>
+                         <div style={{cursor:'pointer'}}
+                              onClick={this.slideSearchMenu}>
+                             <span style={{fontSize:'2em'}}>
+                             <AiOutlineSearch/>
+                             </span>
+                             <br/>
+                             Search
+                         </div>
+                         <div style={{cursor:'pointer'}}>
+                            <Badge count={cartList.length} bgColor='#dd2400'><FiShoppingBag className="icon"/></Badge>
+                            Cart
+                         </div>
+                     </div>
+                </div>
             </div>
 
         )

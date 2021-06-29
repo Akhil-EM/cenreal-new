@@ -6,7 +6,7 @@ export default function Badge(props) {
     return (
         <div className='wrapper'>
                  {props.children}
-                 <p className='app-bg-blue'>{props.count}</p>
+                 <p style={{backgroundColor:props.bgColor}}>{props.count}</p>
             </div>
     )
 }

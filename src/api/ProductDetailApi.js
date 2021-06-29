@@ -4,7 +4,6 @@ class ProductDetailApi{
     _custId=''
     _gustId=''
     constructor(){
-        console.log(localStorage.getItem('gustId'))
         var custDetails=JSON.parse(localStorage.getItem('custInfo'));
         
         if(custDetails != null){

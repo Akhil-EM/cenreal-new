@@ -34,10 +34,9 @@
     width:500px;
     min-height: 50px;
     max-height: 400px;
-    max-width:100%;
+    max-width:80%;
     overflow-y: scroll;
     /* left: 0; */
-    top:55px;
     text-align: left !important;
       
   }

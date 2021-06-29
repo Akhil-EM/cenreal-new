@@ -102,3 +102,15 @@
 .nav-item:hover{
     color:rgb(185, 144, 8);
 }
+
+.mobile-nav{
+    background-color: #023f88;
+    position:fixed;
+    bottom:0;
+    color: #fff;
+    width:100%;
+    z-index:100;
+    box-shadow: 5px -7px 20px 0px rgba(0,0,0,0.75);
+    text-align: center;
+    padding:10px;
+}

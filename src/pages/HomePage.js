@@ -52,7 +52,6 @@ export default class HomePage extends Component {
            }
         }
     }
-
     componentWillMount(){
        this.getInitialData();
     }
@@ -134,8 +133,10 @@ export default class HomePage extends Component {
                   {/* top category list */}
                   {
                         this.state.TopCategoryList.length <0 ? ''
-                        :(
-                            <CategoryCard owlOps={this.state.OwlCarouselOptions} list={this.state.TopCategoryList}/>
+                        :(   
+                            
+                               <CategoryCard  owlOps={this.state.OwlCarouselOptions} list={this.state.TopCategoryList}/>
+                             
                          )
                   }
                   <h3>HOT DEALS</h3>

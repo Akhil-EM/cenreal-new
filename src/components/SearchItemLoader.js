@@ -5,7 +5,8 @@ function SearchItemLoader(props) {
     var _display=props.searchLoadDisp;
     var searchBoxDisp=props.searchBoxDisp
     return (
-        <div className="search-item-loader" style={{display:searchBoxDisp}}>
+        <div className="search-item-loader" style={{display:searchBoxDisp,
+                                                    top:props.topHeight}}>
             <ul>
                 {
                     <li style={{marginLeft:'10px',fontWeight:'600',display:_display}}>Loading....</li>
