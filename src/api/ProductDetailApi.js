@@ -1,23 +1,12 @@
 import http from './@axios';
-
+import Config from '../config';
 class ProductDetailApi{
-    _custId=''
-    _gustId=''
-    constructor(){
-        var custDetails=JSON.parse(localStorage.getItem('custInfo'));
-        
-        if(custDetails != null){
-           this._custId=custDetails.custId;
-        }else{
-            this._gustId=localStorage.getItem('gustId');
-        }
-    }
     productDetailsGET(_urlKey){
         
         return http.get('ProductDetails',{
             params:{
-                custId:this._custId,
-                guestId:this._gustId,
+                custId:Config.customerId,
+                guestId:Config.guestId,
                 urlKey:_urlKey
             }
         })
@@ -27,21 +16,18 @@ class ProductDetailApi{
         
         return http.get('FeaturedProduct',{
             params:{
-                custId:this._custId,
-                guestId:this._gustId,
+                custId:Config.customerId,
+                guestId:Config.guestId
             }
         })
     }
     
     recentProductsGET(){
-        
-        var _gustId,_custId;
-        if(this._gustId==null) _gustId='';
-        if(this.custId ==null) _custId=''
+
         return http.get('RecentProducts',{
             params:{
-                custId:this._custId,
-                guestId:this._gustId,
+                custId:Config.customerId,
+                guestId:Config.guestId
                 
             }
         })
@@ -51,8 +37,8 @@ class ProductDetailApi{
        
         return http.get('RelatedProducts',{
             params:{
-                custId:this._custId,
-                guestId:this._gustId,
+                custId:Config.customerId,
+                guestId:Config.guestId,
                 urlKey:_urlKey
             }
         })

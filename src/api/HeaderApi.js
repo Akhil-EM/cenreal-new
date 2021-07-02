@@ -3,19 +3,6 @@ import http from './@axios';
 import axios from 'axios';
 
 class HeaderApi{
-    _custId=null
-    _gustId=null
-    constructor(){
-        
-        var custDetails=JSON.parse(localStorage.getItem('custInfo'));
-        
-        if(custDetails != null){
-           this._custId=custDetails.custId;
-        }else{
-            this._gustId=localStorage.getItem('gustId');
-        }
-    }
-
     searchAutoCompleteGET(_term){
         return http.get('Product/SearchAutoComplete',{
            
@@ -26,26 +13,18 @@ class HeaderApi{
     }
      
     cartListGET(){
-        
-        var _guestId,_custId;
-        if(this._gustId==null) _guestId='';
-        if(this.custId ==null) _custId=''
         return http.get('Order/CartList',{
             params:{
-                cusId:this._custId,
-                guestId:_guestId,
+                cusId:Config.customerId,
+                guestId:Config.guestId,
             }  
         })
     }
     WishListGET(){
-       
-        var _guestId,_custId;
-        if(this._gustId==null) _guestId='';
-        if(this.custId ==null) _custId=''
         return http.get('Order/WishLists',{
             params:{
-                custId:this._custId,
-                guestId:_guestId,
+                custId:Config.customerId,
+                guestId:Config.guestId,
             }  
         })
     }
@@ -83,14 +62,10 @@ class HeaderApi{
     }
 
     cartSummeryGET(){
-        
-        var _guestId,_custId;
-        if(this._gustId==null) _guestId='';
-        if(this.custId ==null) _custId=''
         return http.get('Order/CartSummary',{
             params:{
-                cusId:this._custId,
-                guestId:_guestId,
+                cusId:Config.customerId,
+                guestId:Config.guestId,
                 vendorurlkey:Config.Headers.vendorurlkey
             }  
         })
@@ -101,7 +76,7 @@ class HeaderApi{
         return new Promise((resolve, reject) => {
 
             axios.post(`${Config.appBaseUrl}Account/Login`,payload,Config.Headers).then(function(response){
-                if(response.status=='200'){
+                if(response.status==='200'){
                 
                  localStorage.setItem('custId',response.data.Data.custId);
                  localStorage.setItem('customer_token',response.data.Data.token);

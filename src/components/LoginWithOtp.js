@@ -16,9 +16,9 @@ export default function LoginWithOtp(props) {
                     <button className='login-btn'>SUBMIT</button>
                     <br/>
                     <br/>
-                    <a href='#'>Register Forgot Password ?</a>
+                    <p>Register Forgot Password ?</p>
                     <h6>or</h6>
-                    <a href='#'>Login with OTP</a>
+                    <p>Login with OTP</p>
                 </div>
             </form>
         </div>

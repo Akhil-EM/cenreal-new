@@ -17,7 +17,7 @@ function SearchItemLoader(props) {
                      <li key={key}>
                         <div className='d-flex' >
                             <img width={35} src={imageUrlBase+item.imageUrl} alt=''/>
-                            <a className='search_item_anchor' href="">{item.ProductName}</a>
+                            <a className='search_item_anchor' href=''>{item.ProductName}</a>
                         </div>
                      </li>
                     ))

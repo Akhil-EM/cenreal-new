@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React from 'react'
 import HeaderApi from '../api/HeaderApi'
-import { Spinner,Alert } from 'react-bootstrap'
+import {Alert } from 'react-bootstrap'
  class Login extends React.Component {
     // constructor(props) {
     //     super(props)
@@ -78,9 +78,9 @@ import { Spinner,Alert } from 'react-bootstrap'
                     </Alert>
                     <br/>
                     <br/>
-                    <a href='#' >Register Forgot Password ?</a>
+                    <p  >Register Forgot Password ?</p>
                     <h6>or</h6>
-                    <a href='#'  >Login with OTP</a>
+                    <p  >Login with OTP</p>
                 </div>
           
             </div>

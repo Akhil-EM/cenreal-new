@@ -1,3 +1,13 @@
+var customerID=''
+var guestID=''
+var customerDetails=JSON.parse(localStorage.getItem('custInfo'));
+
+if(customerDetails != null){
+    customerID=customerDetails.custId;
+}else{   
+    guestID=localStorage.getItem('gustId');
+}
+
 module.exports={
     appBaseUrl:'http://wpr.intertoons.net/centrealapi/api/v2/',
     imageUrlBase:'http://wpr.intertoons.net/centrealadmin/',
@@ -9,5 +19,7 @@ module.exports={
         'lang':'1',
         'vendorurlkey':'centrealkochi',
         'token':localStorage.getItem('customer_token')
-    }
+    },
+    customerId:customerID,
+    guestId:guestID
 }

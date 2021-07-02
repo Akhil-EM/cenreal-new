@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import {FaFacebookF,FaInstagram,FaTwitter,FaYoutube,FaLinkedinIn,FaPinterestP} from 'react-icons/fa'
-import HomePageApi from '../api/HomePageApi';
+import {FaFacebookF,FaInstagram,FaTwitter,FaYoutube,FaLinkedinIn,FaPinterestP} from 'react-icons/fa';
 import '../assets/css/footer.css';
 export default class Footer extends Component {
     constructor(props) {

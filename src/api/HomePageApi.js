@@ -1,15 +1,9 @@
 import http from './@axios';
-
+import Config from '../config';
 class HomePageApi{
+
     
-    constructor(lang,vendorurlkey,token){
-        this._lang=1;
-        this._venderUrlKey='centrealkochi';
-        this._token=null;
-    }
-     _lang
-     _venderUrlKey;
-     _token;
+
     homeProductsGET(){
         return http.get('Products/HomeProducts')
     }
@@ -25,8 +19,8 @@ class HomePageApi{
     dealOfTheDayGET(){
         return http.get('DealOfDay',{
             params:{
-                custId:'',
-                guestId:'ai6y3xy'
+                custId:Config.customerId,
+                guestId:Config.guestId
             }
         })
     }
@@ -34,8 +28,8 @@ class HomePageApi{
     popularProductGET(){
         return http.get('PopularProduct',{
             params:{
-                custId:'',
-                guestId:'ai6y3xy'
+                custId:Config.customerId,
+                guestId:Config.guestId
             }
         })
     }
@@ -43,8 +37,8 @@ class HomePageApi{
     BrandListGET(){
         return http.get('BrandList',{
             params:{
-                custId:'',
-                guestId:'ai6y3xy'
+                custId:Config.customerId,
+                guestId:Config.guestId
             }
         })
     }
@@ -52,4 +46,4 @@ class HomePageApi{
 
 
 
-export default new HomePageApi;
+export default new HomePageApi();

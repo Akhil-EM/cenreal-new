@@ -10,12 +10,12 @@ import {FaRegUser} from 'react-icons/fa';
 import {FcMenu} from 'react-icons/fc';
 import {BiCurrentLocation,BiSearch,BiUserCircle} from 'react-icons/bi';
 import Login from './Login';
-import ForgotPassword from './ForgotPassword';
-import LoginWithOtp from './LoginWithOtp';
+// import ForgotPassword from './ForgotPassword';
+// import LoginWithOtp from './LoginWithOtp';
 import HeaderApi from '../api/HeaderApi';
 
 import Radium, {StyleRoot} from 'radium';
-import {slideInRight,slideOutRight,slideOutLeft,slideInLeft} from 'react-animations';
+import {slideOutRight,slideOutLeft,slideInLeft} from 'react-animations';
 import { withRouter} from "react-router-dom";
 import '../assets/css/header.css';
 import '../assets/css/animate.css'
@@ -97,7 +97,7 @@ class Header extends Component {
     }
 
     EndAnimation=()=>{
-        if(this.state.minCartDisplayed==false) return;
+        if(this.state.minCartDisplayed===false) return;
         this.setState({minCartStyle:{backgroundColor:'#fff',
                                   height:'100vh',
                                   width:'60%',
@@ -289,7 +289,7 @@ class Header extends Component {
         this.setState({searchBoxDisplay:'none',searchTerm:''})
     }
     deliveryLocationCheck=()=>{
-        if(this.state.currentDeliveryLocation=='') return alert('select delivery location');
+        if(this.state.currentDeliveryLocation==='') return alert('select delivery location');
         localStorage.setItem('area',this.state.currentDeliveryLocation);
         localStorage.setItem('pincodeId',this.state.delLocationId);
         localStorage.setItem('pincode',this.state.delLocationPincode);
@@ -310,7 +310,7 @@ class Header extends Component {
              
              <div className='app-base-bg p-2  d-flex justify-content-between'>
                 <div className='d-flex '>
-                   <img src={logoUrl} alt='logo' height={50}/>
+                   <img src={logoUrl} alt='logo' height={50} onClick={()=>this.navigateTo('')}/>
                     <div className='d-none d-lg-block'>
                         <div className='search-container '>
                           <input  onKeyUp={this.searchProduct} onChange={this.handleChange} className="search-input" value={this.state.searchTerm} type="text" placeholder="Search Inside 15,000 products....."/>
@@ -350,7 +350,7 @@ class Header extends Component {
                     <div className="container">
                     <div className="row">
                         <div className="col-sm d-none d-lg-block ">
-                            <img width={380}  src={process.env.PUBLIC_URL+'/img/sign-up-image.jpg'} />
+                            <img width={380} alt='logo'  src={process.env.PUBLIC_URL+'/img/sign-up-image.jpg'} />
                         </div>
                         <div className="col-sm">
                             <Login closeFn={this.handleClose} preSett={this.preSettings}/>
@@ -458,7 +458,7 @@ class Header extends Component {
                        </button>
                      </div>
                      {
-                             this.state.userName==''?'':
+                             this.state.userName===''?'':
                              <div className='d-flex'>
                                 <div style={{fontSize:'1.9em',
                                             marginRight:'10px',
@@ -485,7 +485,11 @@ class Header extends Component {
                       <hr/>
                       <h6 className='nav-item' >Account</h6>
                       <h6 className='nav-item' >Help</h6>
-                      <h6 className='nav-item' >Change location ({this.state.deliverLocation})</h6>
+                      <h6 className='nav-item' onClick={()=>this.navigateTo('locations')}>Change location
+                                                {
+                                                  this.state.deliverLocation===''?'':
+                                                  (this.state.deliverLocation)
+                                                }</h6>
                       <h6 className='nav-item' onClick={this.signOut}>Sign Out</h6>
                       <hr/>
                       <h6><b>CONTACT US</b></h6>

@@ -16,11 +16,12 @@ import 'owl.carousel/dist/assets/owl.theme.default.css';
 import ProductCard from '../components/ProductCard';
 import ProductCardSimple from '../components/ProductCardSimple'
 import Footer from '../components/Footer'
+import { withRouter } from 'react-router';
 
-export default class ProductDetail extends Component {
+class ProductDetail extends Component {
     constructor(props) {
         super(props)
-    
+       
         this.state = {
              product:'',
              productUrl:'',
@@ -57,17 +58,17 @@ export default class ProductDetail extends Component {
             }
            
         }
+
+
     }
 
     componentWillMount(){
        this.getInitializeData();
     }
      
+
     getInitializeData(){
-         var fullUrl=window.location.href;
-         var startPos=fullUrl.search('detail/');
-         var strLen=fullUrl.length;
-         var prodUrl=fullUrl.slice(startPos+7,strLen);
+         var prodUrl=this.props.match.params.productUrl;
          var ProdDetails;
          ProductDetailApi.productDetailsGET(prodUrl)
                          .then((response)=>{
@@ -119,6 +120,11 @@ export default class ProductDetail extends Component {
          
     }
     
+    navigateTo(_navigateTo){
+        this.props.history.push(`/${_navigateTo}`);         
+        window.location.reload();
+    }
+
     render() {
         let imageArray=this.state.ProductImages;
         let specArray=this.state.specs;
@@ -142,7 +148,7 @@ export default class ProductDetail extends Component {
                      <a href={this.state.productUrl}>{this.state.product}</a>
                      <hr/>
                  </div>
-                 <div class="container-fluid">
+                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-sm-4  p-0">
                             <div className='d-flex'>
@@ -250,7 +256,7 @@ export default class ProductDetail extends Component {
                                         <div key={key} className="card text-center p-4" style={{width: '100%',borderRadius:'8px',marginBottom:'15px'}}>
                                            
                                            <img src={imageUrlBase+item.imageUrl} alt={item.prName}/>
-                                           <a style={{textDecoration:'none',color:'black'}} href={`${frontEndUrl+'/Product-detail/'+item.urlKey}`}>{item.prName}</a>
+                                           <p  onClick={(()=>this.navigateTo('product-detail/'+item.urlKey))} href={`${frontEndUrl+'/Product-detail/'+item.urlKey}`}>{item.prName}</p>
                                            <br/>
                                            <h6 className='text-start'>Rs.{item.unitPrice}</h6>
                                         </div>
@@ -331,3 +337,5 @@ export default class ProductDetail extends Component {
 
     
 }
+
+export default withRouter(ProductDetail);

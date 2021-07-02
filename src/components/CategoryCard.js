@@ -39,25 +39,24 @@ import {imageUrlBase} from '../config';
 import { withRouter} from "react-router-dom";
 
 class CategoryCard extends Component {
-    constructor(props) {
-        super(props)
-    }
 
-    navigateTo(_navigateTo){
-        this.props.history.push(`/${_navigateTo}`);      
+    navigateTo(_navigateTo,_catId,_catName,_parentId,_categoryUrlKey){
+        this.props.history.push(`/${_navigateTo}`,{categoryName:_catName,categoryId:_catId,parentId:_parentId,categoryUrlKey:_categoryUrlKey});      
     }
 
     render() {
+        console.log('category',this.props)
         var itemList=this.props.list;
         var owlOptions=this.props.owlOps;
+        // console.log('list',itemList)
         return (
             <OwlCarousel  className={`owl-theme `} {...owlOptions}>
               {
                  itemList.map((item,key)=>(
-                   <div className='category-card item' key={key} onClick={()=>this.navigateTo(`products/${item.catUrlKey}`)}>
+                   <div className='category-card item' key={key} onClick={()=>this.navigateTo(`products/${item.catUrlKey}`,item.catId,item.catName,item.parentId,item.catUrlKey)}>
                         <img width={150} height={150} src={imageUrlBase+item.imageUrl} alt={item.alt} />
                         <br/>
-                        <a href='#'>{item.catName}</a>
+                        <p>{item.catName}</p>
                    </div>
                   ))
              }

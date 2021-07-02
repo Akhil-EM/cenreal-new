@@ -15,12 +15,14 @@ export default class CartItem extends Component {
     }
     
     render() {
+        
         return (
+           
             <div>
                 {
                 this.state.cartList.map((item,key)=>(
                      <div key={key} className='cart-item d-flex justify-content-around'>
-                         <img src={imageUrlBase+item.imageUrl} alt='image' width={60}/>
+                         <img src={imageUrlBase+item.imageUrl} alt={item.prName} width={60}/>
                          <div className='name-and-count'>
                         <h6>{item.prName}</h6>
                         <p style={{color:'rgba(0, 0, 0, 0.295)'}}>{item.qty} <AiOutlineClose style={{marginBottom:'5px'}}/> Rs {item.unitPrice}</p>

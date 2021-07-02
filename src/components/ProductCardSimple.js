@@ -1,5 +1,4 @@
 import React from 'react'
-import { AiOutlineShoppingCart } from 'react-icons/ai';
 import {imageUrlBase,frontEndUrl} from '../config';
 import '../assets/css/style.css'
 export default function ProductCardSimple(props) {
@@ -17,7 +16,4 @@ export default function ProductCardSimple(props) {
         </div>
     )
 
-    function navigate(){
-       
-    }
 }

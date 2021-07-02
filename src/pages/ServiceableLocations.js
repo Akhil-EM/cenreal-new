@@ -3,7 +3,8 @@ import Header from '../components/Header';
 import {RiArrowDropRightLine} from 'react-icons/ri';
 import HeaderApi from '../api/HeaderApi';
 import '../assets/css/style.css'
-export default class ServiceableLocations extends Component {
+import { withRouter} from "react-router-dom";
+class ServiceableLocations extends Component {
     constructor(props) {
         super(props)
     
@@ -20,6 +21,7 @@ export default class ServiceableLocations extends Component {
                      console.log(error)
                  })
     }
+
     setLocation(_area,_pincodeId,_pincode){
         localStorage.setItem('area',_area);
         localStorage.setItem('pincodeId',_pincodeId);
@@ -27,14 +29,19 @@ export default class ServiceableLocations extends Component {
         window.location.reload();
     }
     
+    navigateTo(_navigateTo){
+        this.props.history.push(`/${_navigateTo}`);         
+    }
+
+    
     render() {
         var locationList=this.state.locationList;
-        console.log(locationList);
+        
         return (
             <div>
                 <Header/>
                 <div className='anchor-nav d-none d-lg-block'>
-                     <a href='#'>Home</a>
+                     <a onClick={()=>this.navigateTo('')} style={{cursor:'pointer'}}>Home</a>
                      <RiArrowDropRightLine style={{fontSize:'2em'}}/>
                       Locations
                      <RiArrowDropRightLine style={{fontSize:'2em'}}/>
@@ -57,3 +64,8 @@ export default class ServiceableLocations extends Component {
         )
     }
 }
+
+
+
+
+export default  withRouter(ServiceableLocations);

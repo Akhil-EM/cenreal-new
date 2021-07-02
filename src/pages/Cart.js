@@ -201,13 +201,13 @@ class Cart extends Component {
                             <h3>Apply Promo Code</h3>
                             <div className='text-center'>
                                  <div className='mt-4 p-4' style={{backgroundColor:'rgba(179, 179, 179, 0.418)'}}>
-                                    <div class="input-group mb-2">
+                                    <div className="input-group mb-2">
                                         <input type="text"
-                                               class="form-control text-center" 
+                                               className="form-control text-center" 
                                                placeholder="Enter voucher code"
                                                value={this.state.couponCode} />
-                                        <div class="input-group-prepend">
-                                          {/* <div class="input-group-text p-3">Apply</div> */}
+                                        <div className="input-group-prepend">
+                                          {/* <div className="input-group-text p-3">Apply</div> */}
                                           <button className='btn' >Apply</button>
                                         </div>
                                     </div>
