@@ -28,6 +28,7 @@ export default function router() {
                         <ServiceableLocations/>
                     </Route> 
                     <Route path="/products/:category" component={Products}/>
+                    <Route path="/products" component={Products}/>
                     <Route component={ErrorPage}/>
                  </Switch>
              </BrowserRouter> 

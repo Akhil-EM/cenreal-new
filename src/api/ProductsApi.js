@@ -20,7 +20,7 @@ class ProductsApi{
                     minPrice:_minPrice})
     }
 
-    searchPOST(_currentPage,_filter,_filterValues,_pageSize,_sortOrder,_minPrice,_maxPrice){
+    searchPOST(_currentPage,_filter,_filterValues,_pageSize,_sortOrder,_minPrice,_maxPrice,_searchString){
         return http.post('Product/Search',{
                     currentpage:_currentPage,
                     custId:Config.customerId,
@@ -29,6 +29,7 @@ class ProductsApi{
                     guestId:Config.guestId,
                     pagesize:_pageSize,
                     sortorder:_sortOrder,
+                    searchstring:_searchString,
                     vendorUrlKey:Config.Headers.vendorurlkey,
                     maxPrice:_maxPrice,
                     minPrice:_minPrice})

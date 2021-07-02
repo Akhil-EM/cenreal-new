@@ -63,7 +63,9 @@ class ProductDetail extends Component {
     }
 
     componentWillMount(){
+        
        this.getInitializeData();
+
     }
      
 

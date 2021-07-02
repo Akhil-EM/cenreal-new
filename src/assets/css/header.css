@@ -58,6 +58,14 @@
   
 }
 
+.under-nav-item p{
+   cursor:pointer;
+   margin:10px;
+}
+
+.under-nav-item p:hover{
+    color: #D71920;
+}
 .menu-btn{
     font-size:2em;
     border:none;

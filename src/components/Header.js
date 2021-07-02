@@ -35,9 +35,9 @@ const styles={
     }
 }
 class Header extends Component {
-
+    
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
              searchProducts:[],
              cartList:[],
@@ -57,18 +57,21 @@ class Header extends Component {
              minCartDisplayed:false,
              cartSubTotal:0,
              cartSummery:[],
+             categoryList:[],
              deliverLocation:'',
              delLocationId:null,
              delLocationPincode:null,
              mainMenuStyle:{display:'none'},
              searchMenuStyle:{display:'none'},
-             searchMenuOpen:false
-             
+             searchMenuOpen:false    
         }
 
         this.handleChange = this.handleChange.bind(this);
         this.handleClose=this.handleClose.bind(this);
         this.preSettings=this.preSettings.bind(this);
+        this.changeSearchValue=this.changeSearchValue.bind(this);
+
+        this.length=0;
         
     }
 
@@ -86,9 +89,9 @@ class Header extends Component {
         this.handleDeliveryLocationBoxClose();
         this.props.history.push(`/locations`);
     }
+
     componentWillMount(){
         this.preSettings();
-       
     }
     
     StartAnimation=()=>{
@@ -227,8 +230,17 @@ class Header extends Component {
                     this.setState({cartSummery:response.data.Data,subTotal:response.data.Data.subTotal})
                  }).catch((error)=>{
                      console.log(error.response)
+                 });
+        
+        HeaderApi.categoryGET()
+                 .then((response)=>{
+                    this.setState({categoryList:response.data.Data})
+                 }).catch((error)=>{
+                     console.timeLog(error);
                  })
+        
     }
+
     handleDeliveryLocationBoxClose=()=>{
         this.setState({showDeliveryLocationBox:false})}
     handleDeliveryLocationBoxShow=()=>{
@@ -239,8 +251,6 @@ class Header extends Component {
     handleShow = () => this.setState({show:true});
     handleChange=(event)=>{
         this.setState({searchTerm: event.target.value});
-        
-        ///console.log(this.state.searchTerm);
         this.searchProduct();
     } 
 
@@ -296,14 +306,36 @@ class Header extends Component {
         window.location.reload();
     }
 
-
+   
+    changeSearchValue=(_searchVal)=>{
+        this.setState({searchTerm:_searchVal});
+    }
     
+    
+    searchProductAndNavigate=()=>{
+        var term=this.state.searchTerm;
+        if(term==='') return alert('please enter a value.!!')
+         this.props.history.push({pathname: '/products',
+                                  search: `?search=${term}`,from:'category-card',
+                                  state:{from:'search',searchTerm:term}});
+         window.location.reload();
+    }
+    
+    counter(){
+       console.log(this.length)
+       return this.length+1;
+    }
+
     render() {
         let cartList=this.state.cartList;
         let wishList=this.state.wishList;
         let deliveryList=this.state.deliveryList;
         let logoUrl=process.env.PUBLIC_URL+'/img/Centreal_Bazaar.png';
         let subTot=this.state.subTotal;
+        let fullCategory=this.state.categoryList;
+        let categoryList=fullCategory.filter((item)=>item.parentId==1)//select parent id
+        categoryList=categoryList.slice(0,5)
+        ///console.log('category list',categoryList);
         return (
              <div>
 
@@ -313,11 +345,14 @@ class Header extends Component {
                    <img src={logoUrl} alt='logo' height={50} onClick={()=>this.navigateTo('')}/>
                     <div className='d-none d-lg-block'>
                         <div className='search-container '>
-                          <input  onKeyUp={this.searchProduct} onChange={this.handleChange} className="search-input" value={this.state.searchTerm} type="text" placeholder="Search Inside 15,000 products....."/>
+                          <input    onChange={this.handleChange} className="search-input" value={this.state.searchTerm} type="text" placeholder="Search Inside 15,000 products....."/>
                           <button className="search-icon" onClick={this.closeSearch}><AiOutlineClose style={{fontSize:'1.5em'}}/></button>
-                          <button className="search-btn" type="submit">Search</button>
+                          <button className="search-btn" type="submit" onClick={this.searchProductAndNavigate}>Search</button>
                         </div> 
-                        <SearchItemLoader searchBoxDisp={this.state.searchBoxDisplay} searchLoadDisp={this.state.searchLoadDisplay} searchList={this.state.searchProducts}/>
+                        <SearchItemLoader changeTerm={this.changeSearchValue} 
+                                          searchBoxDisp={this.state.searchBoxDisplay}
+                                          searchLoadDisp={this.state.searchLoadDisplay}
+                                          searchList={this.state.searchProducts}/>
                     </div>
                 </div>
                 <div className='d-flex align-items-center margin  justify-content-between width-250px'>
@@ -371,10 +406,42 @@ class Header extends Component {
              <div className='under-nav justify-content-between p-l-5'>
                  <div className='d-flex '>
                    <button className='menu-btn' onClick={this.slideMenu}><FcMenu/></button>
-                  
                  </div>
+                 {/* <div className='under-nav-item d-flex justify-content-between w-80 d-none d-lg-flex'>
+                     {  
+                        categoryList.map((item1,key)=>(
+                               
+                                <div style={{backgroundColor:'blue',zIndex:300}}>
+                                    <p key={key} >{item1.catName}</p>
+                                    <div>
+                                        {
+                                            fullCategory.map((item2,key)=>(
+                                               item1.catId===item2.parentId?
+                                                <div>
+                                                 <p style={{marginLeft:'20px'}}>{item2.catName}</p>
+                                                  {
+                                                      fullCategory.map((item3,key)=>(
+                                                         item2.catId===item3.parentId?
+                                                         <p style={{marginLeft:'30px'}}>{item3.catName}</p>:
+                                                         ''
+                                                      ))
+                                                  }
+                                                </div>
+                                                :
+                                                ''
+                                                 
+                                            ))
+                                        }
+                                        
+                                    </div>    
+                                </div>
+                        ))
+                        
+                     }
+                     <p>More</p>
+                 </div> */}
+                 
                  <div>
-                   
                    <button className='menu-btn' onClick={this.handleDeliveryLocationBoxShow}>
                        <span style={{fontSize:'.6em',color:'black'}}>
                            {
@@ -385,7 +452,9 @@ class Header extends Component {
                        <BiCurrentLocation/>
                    </button>
                  </div>
+                
              </div>
+             
              <Modal show={this.state.showDeliveryLocationBox} onHide={this.handleDeliveryLocationBoxClose}
                         size="md"
                        aria-labelledby="contained-modal-title-vcenter"
@@ -420,7 +489,7 @@ class Header extends Component {
                     </Modal.Body>
                     
                 </Modal>
-                <StyleRoot >
+                <StyleRoot>
                   <div  style={this.state.minCartStyle}>
                   <div className='header d-flex justify-content-between'>
                         <div className='d-flex'>
@@ -446,7 +515,7 @@ class Header extends Component {
                         </div>
                   </div>
                 </StyleRoot>
-                <StyleRoot >
+                <StyleRoot>
                 <div className='main-header' style={this.state.mainMenuStyle}>
                   <div className='main-header-head'>
                      <div style={{fontSize:'1.5em',

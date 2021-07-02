@@ -3,64 +3,137 @@ import Header from '../components/Header';
 import {RiArrowDropRightLine} from 'react-icons/ri';
 import ProductsApi from '../api/ProductsApi';
 import ProductCard from '../components/ProductCard';
-
+import {IoMdArrowDropdown,IoMdArrowDropup} from 'react-icons/io'
 
 export default class Products extends Component {
-    category
-    categoryId
-    parentId
     constructor(props) {
-        super(props)
-        this.category=this.props.location.state.categoryName;
-        this.categoryId=this.props.location.state.categoryId;
-        this.parentId=this.props.location.state.parentId;
-        this.cateUrlKey=this.props.location.state.categoryUrlKey;
-        this.state = {
+        super(props);
+        this.state={
+            category:'',
+            categoryId:'',
+            parentId:'',
+            cateUrlKey:'',
+            categoryName:'',
+            searchTerm:'',
             categoryList:[],
-            productsList:[]
+            productsList:[],
+            attributes:[],
+            attributesSearch:[],
+            showFirstChild:false
         }
+
+        this.checkedItems=[];
+        
     }
 
     componentWillMount(){
-      this.getInitialData();
+       this.getInitialData();
     }
 
     getInitialData(){
+        var navigatedFrom=this.props.location.state.from;
+        if(navigatedFrom==='category-card'){
+            this.setState({
+                category:this.props.location.state.categoryName,
+                categoryId:this.props.location.state.categoryId,
+                parentId:this.props.location.state.parentId,
+                categoryName:this.props.location.state.categoryName,
+                cateUrlKey:this.props.location.state.categoryUrlKey},()=>{
+                    this.fetchApiData(this.state.cateUrlKey,this.state.searchTerm,{direction: "asc", field: ""},'');
+                });
+
+            
+            
+        }
+
+        if(navigatedFrom==='search'){
+            this.setState({searchTerm:this.props.location.state.searchTerm},()=>{
+                this.fetchApiData(this.state.cateUrlKey,this.state.searchTerm,{direction: "asc", field: ""},'');
+            });
+        }
+
+
         ProductsApi.categoryGET()
                    .then((response)=>{
+                       
                        this.setState({categoryList:response.data.Data})
                    }).catch((error)=>{
                        console.log(error.response)
                    });
 
         
-        ProductsApi.searchFilterPOST(1,{category:this.cateUrlKey},'',
+        ProductsApi.searchFilterPOST(1,{category:this.state.cateUrlKey},'',
                                      100,{direction: "asc", field: ""},0,630)
                    .then((response)=>{
-                    //    console.log('search filter response',response)
+                      // console.log('search filter response',response)
+                       this.setState({attributes:response.data.Data.attributes,
+                                      attributesSearch:response.data.Data.attributes})
                    }).catch((error)=>{
                        console.log(error);
                    });
+        
+        
+    }
 
-        ProductsApi.searchPOST(1,{category:this.cateUrlKey},'',
-                               100,{direction: "asc", field: ""},0,630)
-                .then((response)=>{
-                   
-                   this.setState({productsList:response.data.Data.List});
-                  
-                }).catch((error)=>{
-                   console.log(error);
-                });
+    fetchApiData(_catUrl,_searchString,_sortBy,_filterValues){
+        ProductsApi.searchPOST(1,{category:_catUrl},_filterValues,
+                                  100,_sortBy,0,630,_searchString)
+        .then((response)=>{
+
+        this.setState({productsList:response.data.Data.List});
+
+        }).catch((error)=>{
+        console.log(error);
+        });
     }
 
     navigateTo(_navigateTo){
             this.props.history.push(`/${_navigateTo}`);         
     }
     
+    sortItemChanged=(e)=>{
+        console.log(e.target.value)
+        var sortBy=e.target.value;
+        this.fetchApiData(this.state.cateUrlKey,this.state.searchTerm,{direction:sortBy, field: "prName"})
+    }
+
+    showFirstChildHandler=()=>{
+        this.setState({showFirstChild:!this.state.showFirstChild});
+    }
+
+    searchAttr=(e)=>{
+        let searchFor;
+        console.log(e.target.value);
+        searchFor=e.target.value;
+        
+        let arr=this.state.attributesSearch.filter((item)=>{
+             if((item.attrValue).includes(searchFor.toUpperCase())){//checking existence of search 
+                 return item;
+             }
+              
+        })
+        console.log(arr)
+        this.setState({
+            attributes:arr
+        })
+
+    }
+
+    checkBoxChanged=(e)=>{
+        let checkval=e.target.value;
+        
+        this.checkedItems.includes(checkval)?
+        this.checkedItems.pop(checkval):
+        this.checkedItems.push(checkval);
+
+        this.fetchApiData(this.state.cateUrlKey,this.state.searchTerm,{direction: "asc", field: ""},(this.checkedItems).toString());
+    }
+    
+   
     render() {
         var categoryList=this.state.categoryList;
         var productsList=this.state.productsList;
-        console.log('product list ',productsList)
+        var attributes=this.state.attributes;
         return (
             <div>
                 <Header/>
@@ -74,12 +147,21 @@ export default class Products extends Component {
                      <div className='container-fluid'>
                          <div className='row'>
                              <div className='col-md-3 '>
-                                <div className='card w-100 p-3'>
+                                <div className='card w-100 p-3' >
                                     <h5>CATEGORIES</h5>
-                                     <p className="ml-1">{this.category}</p>
-                                    {
+                                    <div className='d-flex justify-content-around'
+                                         onClick={this.showFirstChildHandler}>
+                                    <p className="ml-1"
+                                        style={{cursor:'pointer'}}>{this.state.categoryName}</p>
+                                        {!this.state.showFirstChild && <IoMdArrowDropdown/>}
+                                        {this.state.showFirstChild && <IoMdArrowDropup/>}
+                                    </div>
+                                    
+
+                                    {   
+                                        this.state.showFirstChild&&   
                                         categoryList.map((item,key)=>(
-                                            item.parentId==this.categoryId?
+                                            item.parentId==this.state.categoryId?
                                             <div style={{marginLeft:'10px'}}>
                                                 <p >{item.catName}</p>
                                                 {
@@ -99,20 +181,45 @@ export default class Products extends Component {
                                             
                                         ))
                                     }
+                                    <div>
+                                    <div>
+                                       <h5>SEARCH</h5>
+                                       <br/>
+                                       <input type="text" className="form-control" placeholder='SEARCH' onChange={this.searchAttr}/>   
+                                       <div style={{marginTop:'10px',
+                                                    height:'200px',
+                                                    overflowX:'scroll',
+                                                    overflowY:'none'}}
+                                                    className="w-100">
+                                        {
+                                             attributes.map((item,key)=>(
+                                                 <div className='d-flex' 
+                                                      key={key}>
+                                                    <input type='checkbox'
+                                                           style={{margin:'5px'}}
+                                                           value={item.attrValueId}
+                                                           defaultChecked={false}
+                                                           onChangeCapture={this.checkBoxChanged}
+                                                           />
+                                                    <h6>{item.attrValue}</h6>
+                                                 </div>    
+                                             ))
+                                        }
+                                       </div>
+                                    </div>
+
+                                    </div>
                                 </div>
                                 <br/>
                              </div>
                              <div className='col-md-9 p-0 m-0'>
                                  <div className='d-flex justify-content-between'>
                                      <div className=''>
-
-                                          { productsList.length>0?
-                                            <h4>{productsList.length} Products found</h4>:''
-                                          }
+                                            <h4>{productsList.length} Products found</h4>
                                      </div>
                                      <div >
                                      <div className="form-group">
-                                        <select className="form-control">
+                                        <select className="form-control" onChange={this.sortItemChanged}>
                                             <option value="latest">Sort by latest</option>
                                             <option value="discount">Discount</option>
                                             <option value="lowToHigh">Price: low to high</option>

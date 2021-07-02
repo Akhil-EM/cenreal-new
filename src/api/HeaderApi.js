@@ -68,7 +68,11 @@ class HeaderApi{
                 guestId:Config.guestId,
                 vendorurlkey:Config.Headers.vendorurlkey
             }  
-        })
+        });
+    }
+
+    categoryGET(){
+        return http.get('Category')
     }
 
    
