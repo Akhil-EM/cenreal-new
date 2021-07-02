@@ -226,6 +226,8 @@ export default class Products extends Component {
                                             <option value="highToLow">Price: high to low</option>
                                             <option value="a-z" >Sort by A to Z</option>
                                             <option value="z-a" >Sort by Z to A</option>
+
+                                            
                                         </select>
                                         </div> 
                                      </div>
