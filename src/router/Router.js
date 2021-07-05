@@ -10,6 +10,8 @@ import Cart from '../pages/Cart';
 import ServiceableLocations from '../pages/ServiceableLocations';
 import Products from '../pages/Products';
 import ErrorPage from '../pages/ErrorPage';
+import Profile from '../pages/Profile';
+import Address from '../pages/Address';
 export default function router() {
 
     return (
@@ -29,7 +31,13 @@ export default function router() {
                     </Route> 
                     <Route path="/products/:category" component={Products}/>
                     <Route path="/products" component={Products}/>
+                    <Route path="/my-profile" >
+                        <Profile/>
+                    </Route>
+                    <Route path='/my-address' component={Address}/>
                     <Route component={ErrorPage}/>
+                    {/* always keep at bottom of switch */}
+                    
                  </Switch>
              </BrowserRouter> 
         </div>

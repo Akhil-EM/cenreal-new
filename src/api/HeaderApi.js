@@ -80,8 +80,8 @@ class HeaderApi{
         return new Promise((resolve, reject) => {
 
             axios.post(`${Config.appBaseUrl}Account/Login`,payload,Config.Headers).then(function(response){
-                if(response.status==='200'){
-                
+                if(response.status=='200'){
+                 
                  localStorage.setItem('custId',response.data.Data.custId);
                  localStorage.setItem('customer_token',response.data.Data.token);
                  localStorage.setItem('custInfo',JSON.stringify(response.data.Data));

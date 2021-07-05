@@ -5,6 +5,7 @@ import ProductsApi from '../api/ProductsApi';
 import ProductCard from '../components/ProductCard';
 import {IoMdArrowDropdown,IoMdArrowDropup} from 'react-icons/io'
 
+
 export default class Products extends Component {
     constructor(props) {
         super(props);
@@ -19,7 +20,7 @@ export default class Products extends Component {
             productsList:[],
             attributes:[],
             attributesSearch:[],
-            showFirstChild:false
+            showFirstChild:false,
         }
 
         this.checkedItems=[];
@@ -65,9 +66,15 @@ export default class Products extends Component {
         ProductsApi.searchFilterPOST(1,{category:this.state.cateUrlKey},'',
                                      100,{direction: "asc", field: ""},0,630)
                    .then((response)=>{
-                      // console.log('search filter response',response)
+                    //    console.log('search filter response',response)
                        this.setState({attributes:response.data.Data.attributes,
-                                      attributesSearch:response.data.Data.attributes})
+                                      attributesSearch:response.data.Data.attributes,
+                                      minPrice:response.data.Data.minPrize,
+                                      maxPrice:response.data.Data.maxPrize
+                                     },()=>{
+                                        //  console.log(this.state.minPrice,"****",
+                                        //              this.state.maxPrice)
+                                     })
                    }).catch((error)=>{
                        console.log(error);
                    });
@@ -79,7 +86,6 @@ export default class Products extends Component {
         ProductsApi.searchPOST(1,{category:_catUrl},_filterValues,
                                   100,_sortBy,0,630,_searchString)
         .then((response)=>{
-
         this.setState({productsList:response.data.Data.List});
 
         }).catch((error)=>{
@@ -92,7 +98,6 @@ export default class Products extends Component {
     }
     
     sortItemChanged=(e)=>{
-        console.log(e.target.value)
         var sortBy=e.target.value;
         this.fetchApiData(this.state.cateUrlKey,this.state.searchTerm,{direction:sortBy, field: "prName"})
     }
@@ -130,6 +135,7 @@ export default class Products extends Component {
     }
     
    
+   
     render() {
         var categoryList=this.state.categoryList;
         var productsList=this.state.productsList;
@@ -139,11 +145,14 @@ export default class Products extends Component {
                 <Header/>
                 <div className='anchor-nav d-none d-lg-block'>
                      <a href='' onClick={()=>this.navigateTo('')}>Home</a>
-                     <RiArrowDropRightLine style={{fontSize:'2em'}}/>
+                     <RiArrowDropRightLine 
+                                style={{fontSize:'2em'}}
+                                
+                                          />
                      <a href=''>{this.category}</a>
                      <hr/>
                  </div>
-                 <div className='p-4'>
+                 <div className='p-4' >
                      <div className='container-fluid'>
                          <div className='row'>
                              <div className='col-md-3 '>
@@ -207,6 +216,11 @@ export default class Products extends Component {
                                         }
                                        </div>
                                     </div>
+                                    <div>
+                                        <br/>
+                                        <h5>PRICE</h5>
+                                        
+                                    </div>
 
                                     </div>
                                 </div>
@@ -227,7 +241,7 @@ export default class Products extends Component {
                                             <option value="a-z" >Sort by A to Z</option>
                                             <option value="z-a" >Sort by Z to A</option>
 
-                                            
+
                                         </select>
                                         </div> 
                                      </div>

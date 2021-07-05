@@ -1,0 +1,32 @@
+.main-nav{
+    background-color:#dd2400;
+    border-radius:10px;
+    padding:15px 0px 15px 0px;
+    height: max-content;
+}
+
+.main-nav ul{
+    list-style:none;
+}
+.main-nav li{
+    color:#fff;
+    border-bottom-left-radius:10px;
+    border-top-left-radius:10px;
+    padding:15px;
+    cursor: pointer;
+    margin-bottom:5px;
+}
+
+.main-nav li:hover{
+    background-color: #fff;
+    color:rgb(32, 32, 32);
+}
+
+.nav-button{
+    background-color:#dd2400;
+    border:none;
+    color: #fff;
+    padding:10px;
+    border-radius:8px;
+}
+

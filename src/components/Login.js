@@ -2,15 +2,7 @@ import React from 'react'
 import HeaderApi from '../api/HeaderApi'
 import {Alert } from 'react-bootstrap'
  class Login extends React.Component {
-    // constructor(props) {
-    //     super(props)
-    
-    //     this.state = {
-    //         testEmailOrPhone:'',
-    //         testPassword:'',
-    //         spinnerDisplay:'none',
-    //         textDisplay:''}
-    // }
+
     constructor(props) {
         super(props)
     
@@ -19,7 +11,8 @@ import {Alert } from 'react-bootstrap'
              testPassword:'',
              spinnerDisplay:'none',
              textDisplay:'',
-             errorDisplay:'none'}
+             errorDisplay:'none',
+             errText:''}
     }
     
     
@@ -41,14 +34,16 @@ import {Alert } from 'react-bootstrap'
         var password=this.state.testPassword;
         HeaderApi.loginPOST({userName:uName,password:password})
                         .then((response)=>{
-                            console.log('login',response.data.Message);
+                           // console.log('login',response.data.Message);
                             this.setState({spinnerDisplay:'none',textDisplay:''});
                             this.props.closeFn();
                             window.location.reload();
                             
                         }).catch((err)=>{
-                            this.setState({spinnerDisplay:'none',textDisplay:'',errorDisplay:''});
-                            
+                            this.setState({spinnerDisplay:'none',
+                                           textDisplay:'',
+                                            errText:err.response.data.Message,
+                                           errorDisplay:''});
                         })
         
     }
@@ -74,7 +69,7 @@ import {Alert } from 'react-bootstrap'
                     </button>
 
                     <Alert variant="danger" style={{display:this.state.errorDisplay,padding:'5px',marginTop:'8px'}}>
-                         Invalid Username Or Password
+                        {this.state.errText}
                     </Alert>
                     <br/>
                     <br/>

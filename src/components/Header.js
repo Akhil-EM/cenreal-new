@@ -363,9 +363,12 @@ class Header extends Component {
                     <div  onClick={this.StartAnimation}>
                       <Badge count={cartList.length} bgColor='#023f88'><FiShoppingBag className="icon"/></Badge>
                     </div>
-                    <button className="icon-btn text-light"><FaRegUser /></button>
+                    <button className="icon-btn text-light"
+                             onClick={()=>this.navigateTo('my-profile')}><FaRegUser /></button>
                     <button className="icon-btn text-light" style={{display:this.state.loginBtnDisp}}><h5 className="mt-3" onClick={this.handleShow}>Login</h5></button>
-                    <button className="icon-btn text-light " style={{fontSize:'1em',whiteSpace:'nowrap'}}>{this.state.userName}</button>
+                    <button className="icon-btn text-light " 
+                            style={{fontSize:'1em',whiteSpace:'nowrap'}}
+                            onClick={()=>this.navigateTo('my-profile')}>{this.state.userName}</button>
                 </div>
                
 
