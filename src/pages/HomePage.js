@@ -46,7 +46,7 @@ export default class HomePage extends Component {
                       items: 3,
                   },
                   1000: {
-                      items: 5,
+                      items: 4,
                   },
               },
            }
@@ -183,7 +183,14 @@ export default class HomePage extends Component {
                           <OwlCarousel className='owl-theme'  {...this.state.OwlCarouselOptions}>
                            {
                              this.state.PopularProductList.map((item,key)=>(
-                               <ProductCard price={item.unitPrice} name={item.prName} imgurl={item.imageUrl} alt={item.urlKey} key={key}/>
+                               <ProductCard price={item.unitPrice}
+                                            specialPrice={item.specialPrice}
+                                            name={item.prName}
+                                            imgurl={item.imageUrl}
+                                            alt={item.urlKey}
+                                            IsWishListed={item.IsWishlisted}
+                                            key={key}
+                                            stockAvailability={item.stockAvailability}/>
                              ))
                            }        
                           </OwlCarousel>

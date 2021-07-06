@@ -2,8 +2,7 @@
     border:1px solid rgba(0, 0, 0, 0.301);
     width:250px;
     text-align: center;
-    padding-top:25px;
-    padding-bottom:25px;
+    padding:10px;
     border-radius:8px;
     text-decoration:none;
     color: rgb(19, 19, 19);;
@@ -21,12 +20,12 @@
 }
 .product-card p{
     font-size:1.2em;
-    margin-top:25px;
+    margin-top:2px;
 }
 .product-card h5{
     color:#dd2400;
 }
-.product-card button{
+.product-card-btn{
     border:none;
     background-color:#dd2400;
     color:#fff;
@@ -34,6 +33,16 @@
     border-radius:5px;
     font-size:1.1em;
 }
+
+.heart-btn{
+   border:none;
+   color:#fff;
+   font-size:1.4em;
+   border-radius:50%;
+}
+.heart-btn:hover{
+    background-color:#dd2400;
+ }
 
 .product-card-simple{
     text-align: center;

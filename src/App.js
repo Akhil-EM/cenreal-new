@@ -2,12 +2,13 @@ import './App.css';
 import '../src/assets/css/style.css'
 // process.env.PUBLIC_URL+'/img/android-chrome-192x192.png'
 import Router from './router/Router'
+import Toast from './components/Toast';
 
 function App() {
  
   setGustId();
 //  return (<Router/>);
-  return (<Router/>);
+  return (<Router />);
 }
 
 function setGustId(){

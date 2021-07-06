@@ -22,6 +22,12 @@ class ProfileNavigation extends Component {
     dashboardButtonClicked=()=>{
         this.setState({navigationDisplay:!this.state.navigationDisplay})
     }
+
+    logOutUser(){
+        window.localStorage.clear();
+        this.navigateTo('')
+        window.location.reload();
+    }
     
     render() {
         let styleFor=this.props.setColorFor
@@ -30,15 +36,19 @@ class ProfileNavigation extends Component {
                  <div className='main-nav d-none d-md-block'>
                       <ul>
                           <li >My Orders</li>
-                          <li>My Wishlist</li>
+                          <li style={styleFor==2?liStyle:{}}
+                              onClick={()=>this.navigateTo('my-wishlist')}>My Wishlist</li>
                           <li style={styleFor==3?liStyle:{}}
                               onClick={()=>this.navigateTo('my-profile')}>My Profile</li>
                           <li style={styleFor==4?liStyle:{}}
                               onClick={()=>this.navigateTo('my-address')}>My Address</li>
-                          <li>Coupons</li>
-                          <li>Change Password</li>
-                          <li>Contact us</li>
-                          <li>Logout</li>
+                          <li style={styleFor==5?liStyle:{}}
+                              onClick={()=>this.navigateTo('my-coupons')}>Coupons</li>
+                          <li style={styleFor==6?liStyle:{}}
+                              onClick={()=>this.navigateTo('change-password')}>Change Password</li>
+                          <li style={styleFor==7?liStyle:{}}
+                              onClick={()=>this.navigateTo('contact-us')}>Contact us</li>
+                          <li onClick={()=>this.logOutUser()}>Logout</li>
                       </ul>
                  </div>
                  <button className='nav-button d-block d-md-none'
@@ -51,15 +61,19 @@ class ProfileNavigation extends Component {
                       <div className='main-nav d-block d-md-none'>
                       <ul>
                           <li>My Orders</li>
-                          <li>My Wishlist</li>
+                          <li style={styleFor==2?liStyle:{}}
+                              onClick={()=>this.navigateTo('my-wishlist')}>My Wishlist</li>
                           <li style={styleFor==3?liStyle:{}}
                               onClick={()=>this.navigateTo('my-profile')}>My Profile</li>
                           <li style={styleFor==4?liStyle:{}}
                               onClick={()=>this.navigateTo('my-address')}>My Address</li>
-                          <li>Coupons</li>
-                          <li>Change Password</li>
-                          <li>Contact us</li>
-                          <li>Logout</li>
+                          <li style={styleFor==5?liStyle:{}}
+                              onClick={()=>this.navigateTo('my-coupons')}>Coupons</li>
+                          <li style={styleFor==6?liStyle:{}}
+                              onClick={()=>this.navigateTo('change-password')}>Change Password</li>
+                          <li style={styleFor==7?liStyle:{}}
+                              onClick={()=>this.navigateTo('contact-us')}>Contact us</li>
+                          <li onClick={()=>this.logOutUser()}>Logout</li>
                       </ul>
                  </div>}
              </Fragment>

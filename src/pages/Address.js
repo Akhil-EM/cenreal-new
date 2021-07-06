@@ -11,6 +11,7 @@ class Address extends Component {
     
         this.state = {
              addressList:[],
+             deliverableLocations:[],
              show:false,
              firstName:'',
              lastName:'',
@@ -18,10 +19,23 @@ class Address extends Component {
              addressLine2:'',
              state:'',
              country:'',
+             district:'',
              place:'',
              pincode:'',
              countrycode:'+91',
-             phone:''
+             phone:'',
+             defaultDeliveryLocation:false,
+             firstNameErrorClass:'',
+             lastNameErrorClass:'',
+             addressLine1ErrorClass:'',
+             addressLine2ErrorClass:'',
+             stateErrorClass:'',
+             districtErrorClass:'',
+             countryErrorClass:'',
+             countrycodeErrorClass:'',
+             pincodeErrorClass:'',
+             phoneErrorClass:'',
+             buttonText:''
         }
     }
 
@@ -36,14 +50,29 @@ class Address extends Component {
 
     hideModal=()=>{
         this.setState({show:false});
+        this.setState({firstNameErrorClass:'',
+                       lastNameErrorClass:'',
+                       addressLine1ErrorClass:'',
+                       addressLine2ErrorClass:'',
+                       stateErrorClass:'',
+                       districtErrorClass:'',
+                       countryErrorClass:'',
+                       pincodeErrorClass:'',
+                       phoneErrorClass:'',
+                       countrycodeErrorClass:''});
     }
     getInitialData(){
         AddressApi.customerAddressGET()
                   .then((response)=>{
-                     console.log(response)
                      this.setState({addressList:response.data.Data})
                   }).catch((error)=>{
                       console.log(error)
+                  });
+        AddressApi.deliverableLocationsGET('')
+                  .then((response)=>{
+                      this.setState({deliverableLocations:response.data.Data})
+                  }).catch((error)=>{
+                      console.log(error);
                   })
     }
     
@@ -59,21 +88,107 @@ class Address extends Component {
     }
 
     editAddress=(_firstName,_lastName,_addressLine1,_addressLine2,_district,_state,_country,
-                 _pincode,_phone)=>{
+                 _pincode,_phone,_defaultDelivery)=>{
 
         this.setState({firstName:_firstName,
                        lastName:_lastName,
                        addressLine1:_addressLine1,
                        addressLine2:_addressLine2,
                        state:_state,
+                       district:_district,
                        country:_country,
                        pincode:_pincode,
-                       phone:_phone});
-
-        console.log('here you can edit address.!!!');
+                       phone:_phone,
+                       defaultDeliveryLocation:_defaultDelivery,
+                       buttonText:'UPDATE ADDRESS'});
         this.showModal();
                 
     }
+
+    validateForm=()=>{
+        this.setState({firstNameErrorClass:'',
+                       lastNameErrorClass:'',
+                       addressLine1ErrorClass:'',
+                       addressLine2ErrorClass:'',
+                       stateErrorClass:'',
+                       districtErrorClass:'',
+                       countryErrorClass:'',
+                       pincodeErrorClass:'',
+                       phoneErrorClass:'',
+                       countrycodeErrorClass:''});
+
+       var formHasError=false;
+       
+
+       var firstName=this.state.firstName;
+       var lastName=this.state.lastName;
+       var addressLine1=this.state.addressLine1;
+       var addressLine2=this.state.addressLine2;
+       var countrycode=this.state.countrycode
+       var pincode=this.state.pincode;
+       var phone=this.state.phone;
+
+       if(!firstName){
+            formHasError=true;
+            this.setState({firstNameErrorClass:'is-invalid'});
+       }
+
+       if(!lastName){
+            formHasError=true;
+            this.setState({lastNameErrorClass:'is-invalid'});
+       }
+
+       if(!addressLine1){
+            formHasError=true;
+            this.setState({addressLine1ErrorClass:'is-invalid'});
+       }
+
+        if(!addressLine2){
+            formHasError=true;
+            this.setState({addressLine2ErrorClass:'is-invalid'});
+        }
+       
+        if(!pincode || pincode.length !==6){
+            formHasError=true;
+            this.setState({pincodeErrorClass:'is-invalid'});
+        }
+
+        if(!phone || phone.length !==10){
+            formHasError=true;
+            this.setState({phoneErrorClass:'is-invalid'});
+        }
+
+        if(!countrycode ){
+            formHasError=true;
+            this.setState({countrycodeErrorClass:'is-invalid'});
+        }
+       
+        return formHasError;
+    }
+     
+    validateAndEditUser=()=>{
+        if(!this.validateForm()){
+            console.log('validation success');
+            AddressApi.updateAddressPOST(this.state.addressLine1,
+                                         this.state.addressLine2,
+                                         this.state.district,
+                                         "area id",
+                                          this.state.country,
+                                          "cust address id",
+                                          
+                                          )
+                      .then(()=>{
+                          alert('address updated');
+                      }).catch((error)=>{
+                          console.log(error);
+                      })
+
+        }else return;
+    }
+    onChange = (e)=>{
+        this.setState({[e.target.name]: e.target.value});
+    }
+
     render() {
         var addressList=this.state.addressList;
         return (
@@ -109,11 +224,12 @@ class Address extends Component {
                                                                                     item.lastName,
                                                                                     item.addLine1,
                                                                                     item.addLine2,
-                                                                                    "",
+                                                                                    item.area, 
                                                                                     item.state,
                                                                                     item.country,
                                                                                     item.pincode,
-                                                                                    item.phone)}>Edit</button>
+                                                                                    item.phone,
+                                                                                    item.isDefaultShippingAddress)}>Edit</button>
                                               <button style={{backgroundColor:'rgba(156, 156, 156, 0.377)',
                                                               width:'80px'}}
                                                       className='btn' 
@@ -161,23 +277,27 @@ class Address extends Component {
                          <br/>
                     <Modal.Body>
                       <div>
-                        <input type="text" className="form-control"  placeholder="Enter Location"/>
+                        <input type="text" className={`form-control`}  placeholder="Enter Location"/>
                         <div style={{backgroundColor:'green',height:'180px'}}></div>
                         <br/>
                         <div className="row">
                             <div className="col-sm">
                                 <input type="text" 
-                                       className="form-control" 
+                                       className={`form-control ${this.state.firstNameErrorClass}`} 
                                        placeholder="First Name"
-                                       value={this.state.firstName}/>
+                                       value={this.state.firstName}
+                                       name='firstName'
+                                       onChange={this.onChange}/>
                                 <br/>
                             </div>
                             
                             <div className="col-sm">
                               <input type="text" 
-                                     className="form-control" 
+                                     className={`form-control ${this.state.lastNameErrorClass}`} 
                                      placeholder="Last Name" 
-                                     value={this.state.lastName}/>
+                                     value={this.state.lastName}
+                                     name='lastName'
+                                     onChange={this.onChange}/>
                               <br/>
                             </div>
                             <br/>
@@ -185,32 +305,42 @@ class Address extends Component {
                         <div className="row">
                             <div className="col-sm">
                                 <input type="text" 
-                                       className="form-control"
+                                       className={`form-control ${this.state.addressLine1ErrorClass}`}
                                        placeholder="Delivery address line 1"
-                                       value={this.state.addressLine1}/>
+                                       value={this.state.addressLine1}
+                                       name='addressLine1'
+                                       onChange={this.onChange}/>
                                 <br/>
                             </div>
                             
                             <div className="col-sm">
                               <input type="text"
-                                     className="form-control"
+                                     className={`form-control ${this.state.addressLine2ErrorClass}`}
                                      placeholder="Delivery address line 2"
-                                     value={this.state.addressLine2}/>
+                                     value={this.state.addressLine2}
+                                     name='addressLine2'
+                                     onChange={this.onChange}/>
                               <br/>
                             </div>
                             <br/>
                         </div>
                         <div className="row">
                             <div className="col-sm">
-                                <select id="inputState" class="form-control">
-                                    <option selected>{this.state.state}</option>
+                                <select id="inputState" 
+                                        className={`form-control ${this.state.stateErrorClass}`}
+                                        name='state'
+                                        onChange={this.onChange}>
+                                    <option defaultValue>{this.state.state}</option>
                                 </select>
                                 <br/>
                             </div>
                             
                             <div className="col-sm">
-                                <select id="inputState" className="form-control">
-                                    <option selected>{this.state.country}</option>
+                                <select id="inputState"
+                                        className={`form-control ${this.state.countryErrorClass}`}
+                                        name='country'
+                                        onChange={this.onChange}>
+                                    <option defaultValue>{this.state.country}</option>
                                 </select>
                               <br/>
                             </div>
@@ -218,15 +348,30 @@ class Address extends Component {
                         </div>
                         <div className="row">
                             <div className="col-sm">
-                                <select id="inputState" className="form-control">
-                                    <option selected>Choose...</option>
-                                    <option>...</option>
+                                <select id="inputState"
+                                        className={`form-control ${this.state.districtErrorClass}`}
+                                        name='area'
+                                        onChange={this.onChange}>
+                                    {
+                                    
+                                      this.state.deliverableLocations.map((item,key)=>(
+                                        <option key={key} defaultValue={this.state.district==item.area?true:false}>{item.area}</option>
+                                        
+                                      ))
+                                      
+                                    }
+                                    
                                 </select>
                               <br/>
                             </div>
                             
                             <div className="col-sm">
-                              <input type="number" className="form-control" placeholder="pincode" />
+                              <input type="number" 
+                                     className={`form-control ${this.state.pincodeErrorClass}`} 
+                                     placeholder="pincode"
+                                     value={this.state.pincode}
+                                     name='pincode'
+                                     onChange={this.onChange}/>
                               <br/>
                             </div>
                             <br/>
@@ -234,26 +379,34 @@ class Address extends Component {
                         <div className="d-flex p-0 justify-content-between w-100">
                             <input type="text"
                                    style={{width:'15%'}}
-                                   className="form-control"
-                                   value={this.state.countrycode}/>
+                                   className={`form-control ${this.state.countrycodeErrorClass}`}
+                                   value={this.state.countrycode}
+                                   name='countrycode'
+                                   onChange={this.onChange}/>
                             <input type="text"
                                    style={{width:'80%'}} 
-                                   className="form-control "
+                                   className={`form-control ${this.state.phoneErrorClass}`}
                                    placeholder="Phone" 
-                                   value={this.state.phone}/>
+                                   value={this.state.phone}
+                                   name='phone'
+                                   onChange={this.onChange}/>
                             <br/>
                         </div>
                         <br/>
                         <div className="form-group">
                             <div className="form-check">
-                            <input className="form-check-input" type="checkbox" id="gridCheck"/>
-                            <label className="form-check-label" for="gridCheck">
+                            <input className="form-check-input"
+                                   type="checkbox"
+                                   defaultChecked={this.state.defaultDeliveryLocation==true?true:false}
+                                   />
+                            <label className="form-check-label" htmlFor="gridCheck">
                                Mark as default Delivery Address
                             </label>
                             </div>
                         </div> 
                         <br/>
-                        <button className='btn btn-success'>UPDATE ADDRESS</button>   
+                        <button className='btn btn-success'
+                                onClick={()=>this.validateAndEditUser()}>{this.state.buttonText}</button>   
                       </div>
                     
                     </Modal.Body>

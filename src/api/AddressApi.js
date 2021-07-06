@@ -36,6 +36,11 @@ class AddressApi{
             state:_state,
       })
       }
+      
+      deliverableLocationsGET(_term){
+          return http.get(`Customer/getPincodeList?term=${_term}`);
+      }
+
 }
 
 

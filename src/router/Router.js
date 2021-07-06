@@ -12,6 +12,10 @@ import Products from '../pages/Products';
 import ErrorPage from '../pages/ErrorPage';
 import Profile from '../pages/Profile';
 import Address from '../pages/Address';
+import Coupons from '../pages/Coupons';
+import ChangePassword from '../pages/ChangePassword';
+import ContactUs from '../pages/ContactUs';
+import WishList from '../pages/WishList';
 export default function router() {
 
     return (
@@ -35,8 +39,12 @@ export default function router() {
                         <Profile/>
                     </Route>
                     <Route path='/my-address' component={Address}/>
+                    <Route path='/my-coupons' component={Coupons}/>
+                    <Route path='/change-password' component={ChangePassword}/>
+                    <Route path='/contact-us' component={ContactUs}/>
+                    <Route path='/my-wishlist' component={WishList}/>
                     <Route component={ErrorPage}/>
-                    {/* always keep at bottom of switch */}
+                    {/* always keep at bottom*/}
                     
                  </Switch>
              </BrowserRouter> 

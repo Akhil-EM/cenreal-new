@@ -1,0 +1,19 @@
+.toast-container{
+    background-color:red;
+    padding-bottom:10px;
+    padding-top:10px;
+    padding-left:15px;
+    padding-right:15px;
+    margin:0;
+    line-height:20px;
+    border-radius:5px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    color:#fff;
+    position:absolute;
+    bottom:0;
+    right:0;
+    margin-bottom:25px;
+    margin-right:20px;
+
+    animation: myfirst 5s linear 2s infinite alternate;
+}

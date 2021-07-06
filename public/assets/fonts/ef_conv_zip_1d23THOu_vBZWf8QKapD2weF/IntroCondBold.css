@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'IntroCondBold';
+    src: url('fonts/IntroCondBold.eot');
+    src: url('fonts/IntroCondBold.eot') format('embedded-opentype'),
+         url('fonts/IntroCondBold.woff2') format('woff2'),
+         url('fonts/IntroCondBold.woff') format('woff'),
+         url('fonts/IntroCondBold.ttf') format('truetype'),
+         url('fonts/IntroCondBold.svg#IntroCondBold') format('svg');
+}
