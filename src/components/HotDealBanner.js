@@ -14,14 +14,9 @@ export default function HotDealBanner(props) {
         <OwlCarousel  className={`owl-theme `} {...owlOptions}>
              {
                  itemList.map((item,key)=>(
-                    <ProductCard price={item.unitPrice}
-                                            specialPrice={item.specialPrice}
-                                            name={item.prName}
-                                            imgurl={item.imageUrl}
-                                            alt={item.urlKey}
-                                            IsWishListed={item.IsWishlisted}
-                                            key={key}
-                                            stockAvailability={item.stockAvailability}/>
+                    <ProductCard key={key} 
+                                 value={JSON.stringify(item)}
+                                 />
                   ))
              }
         </OwlCarousel>

@@ -35,7 +35,8 @@ class ProfileNavigation extends Component {
              <Fragment>
                  <div className='main-nav d-none d-md-block'>
                       <ul>
-                          <li >My Orders</li>
+                          <li style={styleFor==1?liStyle:{}}
+                              onClick={()=>this.navigateTo('my-order')}>My order</li>
                           <li style={styleFor==2?liStyle:{}}
                               onClick={()=>this.navigateTo('my-wishlist')}>My Wishlist</li>
                           <li style={styleFor==3?liStyle:{}}
@@ -60,7 +61,8 @@ class ProfileNavigation extends Component {
                  {this.state.navigationDisplay &&
                       <div className='main-nav d-block d-md-none'>
                       <ul>
-                          <li>My Orders</li>
+                          <li style={styleFor==1?liStyle:{}}
+                              onClick={()=>this.navigateTo('my-order')}>My order</li>
                           <li style={styleFor==2?liStyle:{}}
                               onClick={()=>this.navigateTo('my-wishlist')}>My Wishlist</li>
                           <li style={styleFor==3?liStyle:{}}

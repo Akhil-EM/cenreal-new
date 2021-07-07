@@ -3,7 +3,7 @@ var guestID=''
 var customerDetails=JSON.parse(localStorage.getItem('custInfo'));
 
 if(customerDetails != null){
-    customerID=customerDetails.custId;
+    customerID=(customerDetails.custId);
 }else{   
     guestID=localStorage.getItem('gustId');
 }

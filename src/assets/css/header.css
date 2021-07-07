@@ -122,3 +122,14 @@
     text-align: center;
     padding:10px;
 }
+
+.mincart{
+    background-color:#fff;
+    height:1000vh;
+    width:60%;
+    position:absolute;
+    right:0;
+    top:0;
+    z-index:600;
+    box-shadow: -7px 3px 15px 0px rgba(0, 0, 0, 0.295),
+}

@@ -77,3 +77,46 @@
     margin-left:25px;
     font-weight:600;
 }
+
+.button-set{
+    display:flex;
+    border:1px solid black;
+    width:min-content;
+    height:35px;
+    margin-left:30%;
+    padding:0;
+    border-radius:8px;
+
+}
+
+.button-set button{
+    border:none;
+    background-color:rgb(231, 231, 231);
+    font-size:1.2em;
+    font-weight: bold;
+    border:1px solid black;
+    margin:0;
+}
+
+.btn-first{
+    border-top-left-radius:8px;
+    border-bottom-left-radius:8px;
+}
+.btn-second{
+    border-top-right-radius:8px;
+    border-bottom-right-radius:8px;
+}
+
+.button-set button:hover{
+    background-color:rgba(41, 41, 41, 0.267);
+}
+.button-set p{
+    width:25px;
+    text-align:center;
+    height:100%;
+    position: relative;
+    top: 50%;
+    font-size:1.3em;
+    transform: translateY(-50%);
+    
+}

@@ -10,6 +10,8 @@ class WishList extends Component {
         this.state = {
              wishList:[]
         }
+
+       this.getInitialData=this.getInitialData.bind(this);
     }
     
     componentWillMount(){
@@ -19,8 +21,8 @@ class WishList extends Component {
     getInitialData(){
        WishListApi.wishListGET()
                   .then((response)=>{
-                      console.log(response);
-                      this.setState({wishList:response.data.Data})
+                      this.setState({wishList:response.data.Data});
+                      
                   }).catch((error)=>{
                       console.log(error);
                   })
@@ -43,13 +45,10 @@ class WishList extends Component {
                                this.state.wishList.map((item,key)=>(
                                    <Fragment key={key}>
                                     <div className='col-md'>
-                                      <ProductCard price={item.unitPrice}
-                                                   specialPrice={item.specialPrice}
-                                                   name={item.prName}
-                                                   imgurl={item.imageUrl}
-                                                   alt={item.urlKey} key={key}
-                                                   IsWishListed={true}
-                                                   stockAvailability={item.stockAvailability}/>
+                                      <ProductCard key={key} 
+                                               value={JSON.stringify(item)}
+                                               parentFunction={this.getInitialData}
+                                               from={'whish'}/>
                                       <br/>
                                     </div>
                                     {

@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import Header from '../components/Header';
 import ProfileNavigation from '../components/ProfileNavigation';
 class ContactUs extends Component {
-   
-
-  
-    
     render() {
         return (
             <div>

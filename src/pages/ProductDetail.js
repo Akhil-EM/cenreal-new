@@ -300,7 +300,9 @@ class ProductDetail extends Component {
                           <OwlCarousel className='owl-theme'  {...this.state.options}>
                            {
                              essentialList.map((item,key)=>(
-                               <ProductCard price={item.unitPrice} name={item.prName} imgurl={item.imageUrl} alt={item.urlKey} key={key}/>
+                               <ProductCard key={key} 
+                                            value={JSON.stringify(item)}
+                                            getInitData={this.getInitialData}/>
                              ))
                            }        
                           </OwlCarousel>
@@ -321,7 +323,9 @@ class ProductDetail extends Component {
                           <OwlCarousel className='owl-theme'  {...this.state.options}>
                            {
                              relatedList.map((item,key)=>(
-                               <ProductCard price={item.unitPrice} name={item.prName} imgurl={item.imageUrl} alt={item.urlKey} key={key}/>
+                               <ProductCard key={key} 
+                                            value={JSON.stringify(item)}
+                                            getInitData={this.getInitialData}/>
                              ))
                            }        
                           </OwlCarousel>

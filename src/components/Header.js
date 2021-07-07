@@ -15,7 +15,7 @@ import Login from './Login';
 import HeaderApi from '../api/HeaderApi';
 
 import Radium, {StyleRoot} from 'radium';
-import {slideOutRight,slideOutLeft,slideInLeft} from 'react-animations';
+import {slideOutRight,slideOutLeft,slideInLeft, slideInRight} from 'react-animations';
 import { withRouter} from "react-router-dom";
 import '../assets/css/header.css';
 import '../assets/css/animate.css'
@@ -94,13 +94,11 @@ class Header extends Component {
         this.preSettings();
     }
     
+   
     StartAnimation=()=>{
-        this.setState({minCartStyle:{display:'none'}});
-       
-    }
-
-    EndAnimation=()=>{
-        if(this.state.minCartDisplayed===false) return;
+        console.log(1)
+        if(this.state.minCartDisplayed===true) return;
+        console.log(2)
         this.setState({minCartStyle:{backgroundColor:'#fff',
                                   height:'100vh',
                                   width:'60%',
@@ -110,10 +108,18 @@ class Header extends Component {
                                   zIndex:'600',
                                   boxShadow: '-7px 3px 15px 0px rgba(0, 0, 0, 0.295)',
                                   animation: 'x 1s',
-                                  animationName: Radium.keyframes(slideOutRight, 'left')}});
-        setTimeout((()=>{ this.setState({minCartStyle:{display:'none'},minCartDisplayed:false}) }),1000);
+                                  animationName: Radium.keyframes(slideInRight, 'left')}});
+       
         
     }
+
+    EndAnimation=()=>{
+        this.setState({minCartStyle:{
+                                    animation: 'x 1s',
+                                    animationName: Radium.keyframes(slideOutRight, 'right')}});
+                                    setTimeout((()=>{ this.setState({minCartStyle:{display:'none'},minCartDisplayed:false}) }),1000);
+    }
+
 
     slideMenu=()=>{
         this.setState({mainMenuStyle:{animation: 'x 1s',
@@ -264,7 +270,7 @@ class Header extends Component {
         if(custId == null){
             this.handleShow();
         }else{
-            console.log('continue here ')
+            this.navigateTo('my-wishlist');
         }
     }
 
@@ -357,11 +363,18 @@ class Header extends Component {
                 </div>
                 <div className='d-flex align-items-center margin  justify-content-between width-250px'>
                     <div onClick={this.ShowFavorite}>
-                       <Badge count={wishList.length} bgColor='#023f88'><AiOutlineHeart className="icon "/></Badge>
+                       <Badge count={wishList.length}
+                              bgColor='#023f88'>
+                         <AiOutlineHeart className="icon "/>
+                      </Badge>
                     </div>
                     
                     <div  onClick={this.StartAnimation}>
-                      <Badge count={cartList.length} bgColor='#023f88'><FiShoppingBag className="icon"/></Badge>
+                           <Badge 
+                               count={cartList.length}
+                               bgColor='#023f88'>
+                                   <FiShoppingBag className="icon"/>
+                           </Badge>
                     </div>
                     <button className="icon-btn text-light"
                              onClick={()=>this.navigateTo('my-profile')}><FaRegUser /></button>
@@ -410,40 +423,6 @@ class Header extends Component {
                  <div className='d-flex '>
                    <button className='menu-btn' onClick={this.slideMenu}><FcMenu/></button>
                  </div>
-                 {/* <div className='under-nav-item d-flex justify-content-between w-80 d-none d-lg-flex'>
-                     {  
-                        categoryList.map((item1,key)=>(
-                               
-                                <div style={{backgroundColor:'blue',zIndex:300}}>
-                                    <p key={key} >{item1.catName}</p>
-                                    <div>
-                                        {
-                                            fullCategory.map((item2,key)=>(
-                                               item1.catId===item2.parentId?
-                                                <div>
-                                                 <p style={{marginLeft:'20px'}}>{item2.catName}</p>
-                                                  {
-                                                      fullCategory.map((item3,key)=>(
-                                                         item2.catId===item3.parentId?
-                                                         <p style={{marginLeft:'30px'}}>{item3.catName}</p>:
-                                                         ''
-                                                      ))
-                                                  }
-                                                </div>
-                                                :
-                                                ''
-                                                 
-                                            ))
-                                        }
-                                        
-                                    </div>    
-                                </div>
-                        ))
-                        
-                     }
-                     <p>More</p>
-                 </div> */}
-                 
                  <div>
                    <button className='menu-btn' onClick={this.handleDeliveryLocationBoxShow}>
                        <span style={{fontSize:'.6em',color:'black'}}>
@@ -493,7 +472,7 @@ class Header extends Component {
                     
                 </Modal>
                 <StyleRoot>
-                  <div  style={this.state.minCartStyle}>
+                  <div  style={this.state.minCartStyle} className='mincart'>
                   <div className='header d-flex justify-content-between'>
                         <div className='d-flex'>
                         <h4>MY CART</h4>

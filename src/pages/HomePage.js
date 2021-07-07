@@ -51,6 +51,9 @@ export default class HomePage extends Component {
               },
            }
         }
+      
+        this.getInitialData=this.getInitialData.bind(this);
+        
     }
     componentWillMount(){
        this.getInitialData();
@@ -116,7 +119,8 @@ export default class HomePage extends Component {
                   {
                      this.state.MainBanners.length <0 ? ''
                      :(
-                         <Carousel resStyles={'d-none d-lg-block'} itemArray={this.state.MainBanners}/>
+                         <Carousel resStyles={'d-none d-lg-block'}
+                                   itemArray={this.state.MainBanners}/>
                      )
                   }
 
@@ -124,7 +128,8 @@ export default class HomePage extends Component {
                   {
                      this.state.MobileMainBanners.length <0 ? ''
                      :(
-                         <Carousel resStyles={'d-block d-lg-none'} itemArray={this.state.MobileMainBanners}/>
+                         <Carousel resStyles={'d-block d-lg-none'}
+                                   itemArray={this.state.MobileMainBanners}/>
                      )
                   }
                   <h3 className='ml-3'>SHOP FROM TOP CATEGORIES</h3>
@@ -135,18 +140,23 @@ export default class HomePage extends Component {
                         this.state.TopCategoryList.length <0 ? ''
                         :(   
                             
-                               <CategoryCard  owlOps={this.state.OwlCarouselOptions} list={this.state.TopCategoryList}/>
+                               <CategoryCard owlOps={this.state.OwlCarouselOptions}
+                                             list={this.state.TopCategoryList}/>
                              
                          )
                   }
                   <h3>HOT DEALS</h3>
-                  <hr/>
-                  {
-                        this.state.DealOfDayList.length <0 ? ''
-                        :(
-                            <HotDealBanner owlOps={this.state.OwlCarouselOptions} list={this.state.DealOfDayList}/>
-                         )
-                  }
+                    <hr/>
+                     <OwlCarousel  className={`owl-theme `}
+                                   owlOps={this.state.OwlCarouselOptions}>
+                        {
+                            this.state.DealOfDayList.map((item,key)=>(
+                                <ProductCard key={key}
+                                             value={JSON.stringify(item)}
+                                             getInitData={this.getInitialData}/>
+                              ))
+                        }
+                    </OwlCarousel>
                   <br/>
                   <br/>
                   {
@@ -173,7 +183,7 @@ export default class HomePage extends Component {
                  <div className="text-center">
                     <h3 >BEST SELLERS</h3>
                     <div className="border-container">
-                      <p className='green-border'>SO YOU GET ME TO KNOW ME BETTER</p>
+                      <p className=''>SO YOU GET ME TO KNOW ME BETTER</p>
                     </div>
                     <hr></hr>
                  </div>
@@ -183,14 +193,10 @@ export default class HomePage extends Component {
                           <OwlCarousel className='owl-theme'  {...this.state.OwlCarouselOptions}>
                            {
                              this.state.PopularProductList.map((item,key)=>(
-                               <ProductCard price={item.unitPrice}
-                                            specialPrice={item.specialPrice}
-                                            name={item.prName}
-                                            imgurl={item.imageUrl}
-                                            alt={item.urlKey}
-                                            IsWishListed={item.IsWishlisted}
-                                            key={key}
-                                            stockAvailability={item.stockAvailability}/>
+                                  <ProductCard key={key} 
+                                               value={JSON.stringify(item)}
+                                               getInitData={this.getInitialData}/>
+
                              ))
                            }        
                           </OwlCarousel>

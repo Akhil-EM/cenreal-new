@@ -71,9 +71,6 @@ export default class Products extends Component {
                                       attributesSearch:response.data.Data.attributes,
                                       minPrice:response.data.Data.minPrize,
                                       maxPrice:response.data.Data.maxPrize
-                                     },()=>{
-                                        //  console.log(this.state.minPrice,"****",
-                                        //              this.state.maxPrice)
                                      })
                    }).catch((error)=>{
                        console.log(error);
@@ -98,6 +95,7 @@ export default class Products extends Component {
     }
     
     sortItemChanged=(e)=>{
+
         var sortBy=e.target.value;
         this.fetchApiData(this.state.cateUrlKey,this.state.searchTerm,{direction:sortBy, field: "prName"})
     }
@@ -253,7 +251,9 @@ export default class Products extends Component {
                                          {
                                             productsList.map((item,key)=>(
                                                 <div class="col-sm ">
-                                                  <ProductCard price={item.unitPrice} name={item.prName} imgurl={item.imageUrl} alt={item.urlKey} key={key}/>
+                                                  <ProductCard key={key} 
+                                                    value={JSON.stringify(item)}
+                                                    getInitData={this.getInitialData}/>
                                                   <br/>
                                                 </div>
                                                 

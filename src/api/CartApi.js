@@ -51,6 +51,4 @@ class CartApi{
    
 }
 
-
-
 export default new CartApi();

@@ -16,6 +16,7 @@ import Coupons from '../pages/Coupons';
 import ChangePassword from '../pages/ChangePassword';
 import ContactUs from '../pages/ContactUs';
 import WishList from '../pages/WishList';
+import MyOrders from '../pages/MyOrders';
 export default function router() {
 
     return (
@@ -43,6 +44,7 @@ export default function router() {
                     <Route path='/change-password' component={ChangePassword}/>
                     <Route path='/contact-us' component={ContactUs}/>
                     <Route path='/my-wishlist' component={WishList}/>
+                    <Route path='/my-order' component={MyOrders}/>
                     <Route component={ErrorPage}/>
                     {/* always keep at bottom*/}
                     
