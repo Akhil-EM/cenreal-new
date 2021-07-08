@@ -160,8 +160,9 @@ class Cart extends Component {
                             <h3>Order Summary</h3>
                             <br/>
                             <div className='card p-4' >
-                                <button className='btn btn-danger d-flex justify-content-around pl-4 pr-5'>
-                                <b>Proceed to Checkout</b>
+                                <button className='btn btn-danger d-flex justify-content-around pl-4 pr-5'
+                                        onClick={()=>this.navigateTo('checkout')}>
+                                   <b>Proceed to Checkout</b>
                                 <span style={{fontSize:'1.1em'}}><RiArrowRightCircleFill/></span>
                                 </button>
                                 <div className='d-flex justify-content-between mt-3'>
@@ -285,7 +286,9 @@ class Cart extends Component {
                   :<OwlCarousel className='owl-theme'  {...this.state.OwlCarouselOptions}>
                     {
                         recentProductList.map((item,key)=>(
-                          <ProductCard price={item.unitPrice} name={item.prName} imgurl={item.imageUrl} alt={item.urlKey} key={key}/>
+                          <ProductCard key={key}
+                                        value={JSON.stringify(item)}
+                                        getInitData={this.getInitialData}/>
                         ))
                     }        
                  </OwlCarousel>
@@ -297,7 +300,9 @@ class Cart extends Component {
                   :<OwlCarousel className='owl-theme'  {...this.state.OwlCarouselOptions}>
                     {
                         recentProductList.map((item,key)=>(
-                          <ProductCard price={item.unitPrice} name={item.prName} imgurl={item.imageUrl} alt={item.urlKey} key={key}/>
+                          <ProductCard key={key}
+                                        value={JSON.stringify(item)}
+                                        getInitData={this.getInitialData}/>
                         ))
                     }        
                  </OwlCarousel>

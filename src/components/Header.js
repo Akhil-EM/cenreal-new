@@ -96,13 +96,11 @@ class Header extends Component {
     
    
     StartAnimation=()=>{
-        console.log(1)
         if(this.state.minCartDisplayed===true) return;
-        console.log(2)
         this.setState({minCartStyle:{backgroundColor:'#fff',
                                   height:'100vh',
                                   width:'60%',
-                                  position:'absolute',
+                                  position:'fixed',
                                   right:0,
                                   top:0,
                                   zIndex:'600',
@@ -125,7 +123,7 @@ class Header extends Component {
         this.setState({mainMenuStyle:{animation: 'x 1s',
                                       height:'100vh',
                                       width:'340px',
-                                      position:'absolute',
+                                      position:'fixed',
                                       top:0,
                                       left:0,
                                       zIndex:'100',
@@ -137,7 +135,7 @@ class Header extends Component {
         this.setState({mainMenuStyle:{animation: 'x 1s',
                        height:'100vh',
                        width:'340px',
-                       position:'absolute',
+                       position:'fixed',
                        top:0,
                        left:0,
                        zIndex:'100',
@@ -491,7 +489,7 @@ class Header extends Component {
                             <h4 style={{textAlign:'right',padding:'25px'}}>Sub Total  Rs.{subTot}</h4>
                             <div className='d-flex justify-content-around'>
                             <button className='btn btn-primary w-25' onClick={()=>this.navigateTo('cart')}>View Cart</button>
-                            <button className='btn btn-danger w-25'>Checkout</button>
+                            <button className='btn btn-danger w-25' onClick={()=>this.navigateTo('checkout')}>Checkout</button>
                         </div>
                             
                         </div>

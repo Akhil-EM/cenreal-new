@@ -5,8 +5,7 @@ import Router from './router/Router'
 function App() {
  
   setGustId();
- return (<Router/>);
-  // return (<Router />);
+  return (<Router/>);
 
 }
 
