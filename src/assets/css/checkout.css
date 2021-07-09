@@ -1,0 +1,35 @@
+.delivery-mode{
+    display:flex;
+    border-bottom:.3px solid rgba(54, 54, 54, 0.233);
+    margin-top:10px;
+    padding:0px;
+
+}
+.delivery-mode p{
+   margin:0px;
+   cursor: pointer;
+   padding:5px;
+   user-select:none;
+   border:.3px solid #fff;
+}
+.delivery-mode p:hover{
+    color:rgba(206, 141, 0, 0.548);
+    border:.3px solid rgba(37, 37, 37, 0.219);
+}
+
+.slot-list{
+  display:flex;
+  overflow-x: scroll;
+}
+.slot-list div{
+    width:200px;
+    min-width:200px;
+    padding:45px;
+    text-align: center;
+    margin:5px;
+    border:.5px solid rgba(41, 41, 41, 0.171);
+    border-radius:5px;
+    user-select:none;
+    cursor: pointer;
+    color:rgba(61, 61, 61, 0.603);
+}

@@ -27,5 +27,10 @@ code {
 }
 .app-text-blue{
   color:#023f88;
-  background-color:rgba(156, 156, 156, 0.377);
+ 
 }
+
+.bg-ash{
+  background-color:rgb(207, 207, 207);
+}
+
